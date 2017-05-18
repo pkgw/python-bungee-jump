@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>General-Purpose Computing with Python</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="reveal/reveal.css">
+    <link rel="stylesheet" href="katex/katex.min.css">
+    <link rel="stylesheet" href="pkgwtheme.css" id="theme">
+    <script>
+      if (window.location.search.match(/print-pdf/gi)) {
+        document.write('<link rel="stylesheet" href="reveal/print-pdf.css" type="text/css" media="print">');
+      }
+      if (window.location.search.match(/bbdebug/gi)) {
+        document.write('<style>.reveal .slides section.present { outline: 2px solid red; outline-offset: 0px; }</style>');
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+
+        <section>
+          <h1 class="maintitle1">General-Purpose Computing with Python<h1>
+
+          <div class="footer">
+            <p>Peter K. G. Williams (CfA) •
+              <a href="https://twitter.com/pkgw">@pkgw</a> •
+              <a href="http://newton.cx/~peter/">http://newton.cx/~peter/</a>
+            </p>
+            <p style="font-size: 0.8em; margin-top: 0.7em">
+              CHAMP Camp · Pomona, CA, USA · 2017 Jun 13
+            </p>
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <script src="reveal/head.min.js"></script>
+    <script src="reveal/classList.js"></script>
+    <script src="reveal/reveal.js"></script>
+
+    <script>
+      Reveal.initialize({
+        controls: false,
+        progress: false,
+        history: true,
+        center: false,
+        keyboard: true,
+        touch: false,
+        overview: true,
+        mouseWheel: false,
+        width: 960,
+        height: 720,
+
+        theme: false, // hardcoded with CSS import in <head>
+        transition: 'none', // default/cube/page/concave/zoom/linear/fade/none
+        transitionSpeed: 'default', // default/fast/slow
+
+        dependencies: [
+          { src: 'lib/katex.js', async: true },
+        ],
+      });
+    </script>
+  </body>
+</html>
