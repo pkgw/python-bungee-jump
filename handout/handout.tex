@@ -24,7 +24,10 @@ commands in small pieces. Code that you should type is displayed this way:
 When using Jupyter, you should end most lines by just hitting the \s{Enter}
 key as usual. To actually \i{run} the block of code that you have just typed,
 finish the final line by hitting \s{Shift-Enter} (that is, the \s{Enter} key
-with the \s{Shift} key also held down).
+with the \s{Shift} key also held down). Each numbered chunk of code that you
+type in your Jupyter notebook is called a \i{cell}. \i{You must separate cells
+  in the notebook in exactly the way written here in order to get the desired
+  outputs}.
 
 We are \i{very intentionally} forcing you to type the code yourself! We feel
 that this is very important for learning how to program in any particular
@@ -35,11 +38,39 @@ As ever, please be very careful about typing in commands \i{exactly} as they
 appear in printed form. Punctuation characters that look quite similar are
 often interpreted quite differently by Python.
 
+One exception: we'll write some explanatory text as Python comments, which are
+delimited with hash signs (\s{\#}). You can skip typing the \s{\#} and
+everthing that comes after it.
+
+\begin{lstlisting}
+  x = 7 # now x is 7, but you don't need to type this part
+\end{lstlisting}
+
+Every so often we intentionally have you type a command that results in an
+error. We will indicate this with a comment about ``raising'' a particular
+kind of error.
+
+\begin{lstlisting}
+  assert False # !!! raises AssertionError
+\end{lstlisting}
+
+\i{Only} lines with these annotations should result in error messages. These
+lines will come at the ends of cells, since any code within a cell that comes
+after an error will not be run. Every statement \i{before} the problematic
+line, however, will have taken effect.
+
 Jupyter has a smart editor that tries to automatically manage the
 \i{indentation} of your code --- the white space at the beginning of each
 line. Its automatic indentation should line up with what we show here. If it
 doesn't, please ask a helper for advice. Using an editor with proper automatic
 indentation is \i{enormously} important when coding in Python.
+
+As you might expect, the topic of ``general-purpose programming'' is very
+broad. Meanwhile there is only a small amount of time available for this
+lesson. Given these constraints we have opted to go over a relatively large
+number of topics while spending only a small amount of time on each on. So,
+unfortunately, \i{this lesson will be hurried, and many ideas will be
+  presented only superficially}. Sorry, there's just too much to learn!
 
 
 \newpage
@@ -51,13 +82,443 @@ TBD.
 \newpage
 \section{Data structures}
 
-Yo yo.
+In this activity we will practice creating various kinds of Python data
+objects. It will necessarily be \i{extremely} superficial.
+
+\subsection*{Foundational data types}
+
+The five foundational data types in Python are \i{the None type} (representing
+an empty or undefined value), \i{booleans} (true/false values), \i{integers},
+\i{floats} (approximations of real numbers), and \i{strings} (sequences of
+textual characters).
+
+Here are some examples of ways to assign variables to these different kinds of
+values.
 
 \begin{lstlisting}
-  x = 1
-  y = 2 * x
+  a_none_variable = None
+  a_boolean = False
+  other_boolean = True
+  positive_int = 37
+  negative_int = -100
+  positive_float = 1.75
+  one_million = 1e6
+  negative_pi = -3.14159
+  a_string = "Hello."
+  other_string = 'single quotes work too'
+  empty_string = ""
+  example_complex_string = '''\x46a\x6E\x63y\tth\x69n\x67s'''
 \end{lstlisting}
 
-Carry on.
+\i{When using the Jupyter notebook}, if you just type in a variable's name in
+a cell and hit \s{Shift-Enter}, you will be shown the current value of that
+variable:
+
+\begin{lstlisting}
+  one_million
+\end{lstlisting}
+
+If you want to look at multiple variables, you have to put each one's name in
+a different cell:
+
+\begin{lstlisting}
+  example_complex_string
+\end{lstlisting}
+
+You can do math with these basic data types using about the notation that you
+would expect. Multiplication is expressed with a single asterisk.
+Exponentiation ($a^b$) is written with a double asterisk. You can ``add'' two
+string variables, which results in their \i{concatenation}: just the first
+string followed by the second string.
+
+\begin{lstlisting}
+  boolean_logic = a_boolean and (not other_boolean)
+  new_number = positive_int * negative_int
+  other_number = (positive_int / positive_float)**2
+  concatted_strs = 'Hello,' + ' world.'
+\end{lstlisting}
+
+\subsection*{Core data structures}
+
+Python has three basic data types for building data structures. They are
+generally referred to as \i{collections} because they contain, well,
+collections of other data.
+
+\i{Lists} are
+ordered sequences of other data. Lists can hold any kind of data.
+
+\begin{lstlisting}
+  a_list_of_ints = [1, 2, 5]
+  a_mixed_list = ['Hello', -3.14159, one_million, a_list_of_ints]
+\end{lstlisting}
+
+You can access the \i{items} (also called \i{elements}) of a list by
+\i{indexing} with square brackets.
+
+\medskip
+\begin{center}
+  \Large \underline{The first list index is zero, not one!}
+\end{center}
+\medskip
+
+Every single person who starts out programming has trouble getting used to
+this. Rest assured: there are very good reasons for this convention that will
+become clear over time.
+
+\begin{lstlisting}
+  a_list_of_ints[0]
+\end{lstlisting}
+
+\begin{lstlisting}
+  a_list_of_ints[2]
+\end{lstlisting}
+
+Here are some terse examples hinting at what you can do with lists. Sadly, we
+don't have time to go any deeper.
+
+\begin{lstlisting}
+  length_of_my_list = len(a_list_of_ints)
+  a_list_of_ints.append(8)
+  print(len(a_list_of_ints))
+  print(a_list_of_ints[-1])
+  print(a_mixed_list + a_list_of_ints)
+\end{lstlisting}
+
+Python's \i{sets} are like mathematical sets: unordered collections of
+objects, without duplication. Because of this latter constraint, you can only
+construct sets of certain kinds of data; mutable data structures are not
+allowed, because you could mutate them to break the constraint. Sets \i{can}
+combine different types of data, but tricky subtleties can arise.
+
+Because sets are unordered, you cannot index them. If you want to get a set's
+items back out, often it is helpful to convert it into a list with the
+\t{list()} function --- keeping in mind that the list you get back will be
+given to you in an unpredictable, changeable order.
+
+\begin{lstlisting}
+  a_set = {1, 5, 10, 15}
+  other_set = {1, 1.74, 'hello'}
+  empty_set = set() # note: "{}" doesn't work
+  list_converted_to_set = set(a_list_of_ints)
+\end{lstlisting}
+
+Here are some things you can do with sets:
+
+\begin{lstlisting}
+  print(len(a_set))
+  print(len(empty_set))
+  print(1 in a_set)
+  print(17 in a_set)
+  print(17 not in a_set)
+  a_set.add(17)
+  print(17 not in a_set)
+  print(list(a_set))
+\end{lstlisting}
+
+Finally, \i{dictionaries} (usually shortened to \i{dicts}) are unordered
+collections of pairs of unique \i{keys} associated with possibly-non-unique
+\i{values}. Given a key, it is easy to fetch a value, but the opposite is not
+true. Relatedly, because dictionary keys must be unique, they have to follow
+the same constraints as set items. Dictionary values do not have this
+constraint.
+
+\begin{lstlisting}
+  a_dict = {'key1': 'value1', 'key2': 'value2'}
+  other_dict = {1: [1, 2, 3], -37: None}
+  dict_with_string_keys = dict(key1='value1', key2='value2')
+  empty_dict = {} # this syntax always gives you a dict, not a set
+\end{lstlisting}
+
+To look up a value in a dict, you index it, using the same typed syntax as you
+do for a list. You can use variable-assignment syntax to add new entries to
+dicts. You can use ``\s{del} syntax'' to remove entries.
+
+\begin{lstlisting}
+  print(a_dict['key1'])
+  print(len(a_dict))
+  a_dict['newkey'] = 'newvalue'
+  print(len(a_dict))
+  del a_dict['key1']
+  print(len(a_dict))
+  print(list(other_dict.keys()))
+  print(list(other_dict.values()))
+\end{lstlisting}
+
+The three basic structures provided by Python are \i{not} the only ones out
+there, and they are not necessarily ``fundamental'' in any deep sense. For
+instance, lists can be thought of as dicts where the keys are integers
+starting at zero. Likewise, sets can be thought of as dicts where the values
+are all \s{True}.
+
+\subsection*{Mutability in action}
+
+In the mini-lecture, we emphasized the importance of \i{mutability} and
+\i{ownership} when thinking about data. The basic data structures are mutable,
+so they can change from under you in surprising ways. Try hard to understand
+what happens when you run this small example:
+
+\begin{lstlisting}
+  my_list = [1, 2, 3]
+  print(my_list)
+  other_list = my_list # "other_list" is a new name for the same data
+  other_list.append(37)
+  print(my_list)
+\end{lstlisting}
+
+The foundational data types are all immutable, so they are not susceptible to
+these kinds of surprises.
+
+Python does, however, provide versions of its data structures that are
+immutable after creation. The immutable version of a list is called a
+\i{tuple}. It is usually written with parentheses. However, in many cases the
+parentheses are actually optional!
+
+\begin{lstlisting}
+  a_tuple = (0, 3, 4)
+  same_tuple = 0, 3, 4
+  other_tuple = (a_dict, 'hello', empty_set)
+  empty_tuple = ()
+\end{lstlisting}
+
+In Python, the syntax \s{(x)} is interpreted as mathematical grouping. To
+create a tuple with one element, you must use a special syntax:
+
+\begin{lstlisting}
+  one_item_tuple = (True,)
+\end{lstlisting}
+
+An important fact to remember is that tuples can be used as dictionary keys,
+while lists cannot.
+
+\begin{lstlisting}
+  my_dict = {}
+  my_dict[(1,2,3)] = 'hello'
+  my_dict[1,2,4] = 'goodbye' # tuple parentheses can be omitted here
+  print(my_dict)
+  my_dict[[1,2,5]] = 'problem' # !!! raises TypeError
+\end{lstlisting}
+
+You can generally access and index tuples as you would lists, but you cannot
+modify their contents directly. However, while tuples are immutable, they can
+contain data structures that are themselves mutable:
+
+\begin{lstlisting}
+  print(other_tuple)
+  a_dict['morekey'] = 'edited'
+  print(other_tuple)
+\end{lstlisting}
+
+Because of this fact, tuples containing mutable data structures
+\i{cannot} be used as keys for dictionaries or sets.
+
+\begin{lstlisting}
+  my_dict[other_tuple] = 'problem' # !!! raises TypeError
+\end{lstlisting}
+
+The immutable version of a set is called a \s{frozenset}. There is no
+built-in syntax to create frozen sets. You must instead create them with the
+\s{frozenset()} function. This function takes one argument that is a
+collection, so be careful with parentheses.
+
+\begin{lstlisting}
+  frozen_from_list = frozenset([1, 2, 3])
+  some_tuple = (4, 5, 6)
+  frozen_from_tuple = frozenset(some_tuple)
+  frozen_from_equivalent_tuple = frozenset((4, 5, 6))
+  too_many_arguments = frozenset(4, 5, 6) # !!! raises TypeError
+\end{lstlisting}
+
+There is no built-in immutable version of a \s{dict}.
+
+\subsection*{Choosing the Right Data Structure}
+
+In realistic programs it is \i{exceedingly} important to choose the right data
+structure for your job. Fortunately, Python's foundational structures are very
+flexible and can gracefully handle all sorts of tasks. But there are more
+choices to be made than you might initially think.
+
+For example, say that your program works with radio measurements. Each
+measurement (\s{m}) is tagged with a time (\s{t}), a frequency (\s{f}), and a
+polarization (\s{p}). Here are some ways that you could store a collection of
+measurements:
+
+\begin{itemize}
+\item A list of tuples, each tuple of the form \s{(t, f, p, m)}. Each
+  polarization is encoded as a string: \s{"nn"}, \s{"ee"}, \s{"ne"}, or
+  \s{"en"}.
+\item The same as the above, except the polarizations are encoded as the
+  integers 0--3 instead of strings.
+\item A dict of lists, where the dict keys are the four polarizations
+  (\s{"nn"}, etc.), and the lists are made of tuples \s{(t, f, m)}.
+\item The same as the above, but the dict keys are the timestamps
+  (\s{t}), and the lists are made of tuples \s{(f, p, m)}.
+\item A tuple of four lists: one of all the timestamps, one of frequencies,
+  one of polarizations, and one of measurements.
+\item A dict of dicts of dicts of floats, where the outermost keys are times,
+  then frequencies, then polarizations, and the final values are the
+  measurements.
+\end{itemize}
+
+Which of these is the best? It depends on the characteristics of your data and
+what task you're trying to accomplish. When deciding how to represent your data in
+Python structures, think about these factors:
+
+\begin{enumerate}
+\item Which choice will help me write the simplest, clearest code?
+\item Which choice will result in the fastest program?
+\item Which choice will result in the most memory-efficient program?
+\end{enumerate}
+
+Generally, the first consideration is the most important and the last is the
+least important. When you're dealing with large data sets, however, you may
+have to trade off code complexity for efficiency.
+
+Very similar considerations apply when writing data to disk and reading them
+again. The file format that you use to save data also involves tradeoffs for
+speed, efficiency, convenience, and so on. It is \i{very common} to see people
+spend a lot of time wrestling with code that reads and writes data because the
+file format they are using is not well-matched to the problem they are trying
+to solve. If you're having trouble doing what you want with a data set, don't
+forget to ask yourself: \i{is the problem in the code, or in the data
+  structure}?
+
+
+\newpage
+\section{Input and Output (``I/O'')}
+
+We've already encountered one form of I/O: the \s{print()} function. It turns
+your Python data into strings and prints them to your Jupyter notebook or, if
+you're writing a command-line program, to your terminal.
+
+\subsection*{We are Very, Very Sorry}
+
+We now have to spend some time on boring technical history. You shouldn't need
+to worry about it, but as things stand in the world of Python, you do.
+
+We have told you that there are are two main versions of Python out there,
+Python~2 and Python~3, and that we are using Python~2. One of the key
+differences between the two is that in Python~2, \s{print} is actually a
+special form of syntax in the language, not a built-in function. This was
+eventually recognized to be an enormous annoyance, so it was fixed in
+Python~3.
+
+In Python~3, you can print multiple values in one line by giving the print
+function multiple arguments. The values will be separated by spaces in the
+output. The resulting code might look like:
+
+\begin{lstlisting}
+  x = 17
+  print('The value of x is', x) # Python 3 style, but won't crash Python 2
+\end{lstlisting}
+
+In Python~2, there are no parentheses:
+
+\begin{lstlisting}
+  print 'The value of x is', x # Python 2 style; will fail in Python 3
+\end{lstlisting}
+
+In the examples in this handout thus far, we have been tricky. Because
+parentheses around a single value are interpreted by Python to represent
+grouping, you can get consistent results in both versions of Python when
+printing single values:
+
+\begin{lstlisting}
+  print(x) # same result in both Python 2 and Python 3
+\end{lstlisting}
+
+This is the reason that the first example, with parentheses, doesn't crash in
+Python~2, although it gives results that are probably not what you want.
+Version~2 of Python interprets the first example as asking it to print out a
+tuple made out of a string and an integer. This is close to what you want, but
+it adds parentheses and commas around the values that get printed.
+
+\begin{lstlisting}
+  python_2s_view = ('The value of x is', x)
+  print python_2s_view
+\end{lstlisting}
+
+If you are writing a Python script, you can add a special command that will
+give you ``print as a function'' behavior in \i{both} Python~3 and Python~2.
+At the top of your file, you can write:
+
+\begin{lstlisting}
+  from __future__ import print_function # !!! might raise error in Jupyter
+\end{lstlisting}
+
+This will activate a special mode in Python~2 and do nothing in Python~3. You
+should use this syntax because it helps your code be compatible with Python~3
+and the ``print as a function'' mode is more sensible and flexible overall.
+
+\subsection*{Back to the I/O}
+
+The built-in \s{open()} function opens regular files on your computer's hard
+disk for input or output. We refer to the file's \i{open mode} as either being
+\i{read} or \i{write} depending on what you're going to do with it. The mode
+is denoted with a special string argument that is passed to \s{open()}.
+
+\begin{lstlisting}
+  f = open('mydata.txt', 'w') # the "w" means to open for writing
+\end{lstlisting}
+
+Here's an important thing to know: \i{when you open a file for writing, the
+  operating system will delete all of its contents and give you an empty
+  file!} There is a special \s{"a"} mode for \i{appending} data to an existing
+file without erasing its contents. It may seem surprising at first, but often
+the default behavior (\i{truncation}) is preferable to appending.
+
+The \s{open()} function returns a new form of Python data, an \i{object} --- a
+\i{file object}, to be specific. You can assign a file object to a variable
+like any other kind of Python data, but it is not a string, or a dict, or one
+of the other basic data structure types. We say that it is \i{opaque}: it's
+like a box that you can hold and move around, but you can't open.
+
+File objects, like almost all other Python objects, come with functions
+attached to them. You can access and call these functions using ``dot syntax''
+as shown below. Here the \s{'\textbackslash n'} bit of the string is a special
+``escape code'' embedded in the string's textual value; we don't have space to
+describe what it's for.
+
+\begin{lstlisting}
+  f.write('Here is some text.\n')
+  another_name_for_f = f
+  another_name_for_f.write('Here is more text.\n')
+\end{lstlisting}
+
+There is a special way to invoke the \s{print} statement that prints data to a
+file instead of to the terminal:
+
+\begin{lstlisting}
+  print >>f, 'The value of x is', x
+\end{lstlisting}
+
+When you're done with a file that you've opened, you should always close it:
+
+\begin{lstlisting}
+  f.close()
+\end{lstlisting}
+
+Once you've closed a file, the \s{f} variable is in a bit of a funny state:
+the variable still exists, but it's illegal to do anything with it:
+
+\begin{lstlisting}
+  print >>f, 'This will fail' # !!! raises ValueError
+\end{lstlisting}
+
+One reason that it's important to close files is \i{buffering}: for efficiency
+reason, Python will not actually write data to disk every time you issue a
+\s{print} or \s{write()} command. The last data in your file are very unlikely
+to actually show up until you issue the \s{close()} call. While Python will
+eventually write out your data if you forget the \s{close()}, including it
+gives you precise control over when this happens.
+
+The above is just one example of the subtleties that arise when doing I/O.
+There are \i{many} more. What happens when two programs try to write to the
+same file? What happens when the file is accessed over a network and the
+network goes down? What happens if a file is deleted while you're reading it?
+The answers to these questions are defined by the underlying operating system,
+not Python. Since every useful program has to do I/O, it is \i{very}
+worthwhile to spend time learning about the fundamental rules of I/O on
+Unix-like operating systems.
+
 
 \end{document}
