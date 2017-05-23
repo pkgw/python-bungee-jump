@@ -39,6 +39,7 @@
           </div>
         </section>
 
+
         <section>
           <h1 class="titlecard">1. Foundations</h1>
         </section>
@@ -109,6 +110,7 @@
           </ol>
         </section>
 
+
         <section>
           <h1 class="titlecard">2. Data Structures</h1>
         </section>
@@ -174,28 +176,97 @@ print(a[1])</pre>
           <p>The trip-up in the previous slide only happened because the data
             underlying <i>a</i> could be modified.</p>
 
-          <p>In simple, linear programs, mutations are relatively easy to keep
-            track of.</p>
+          <p>Mutations are relatively easy to keep track of in simple, linear
+            programs.</p>
 
           <p>Avoiding mutability makes it <i>much</i> easier to build complex
             software systems.</p>
         </section>
+
 
         <section>
           <h1 class="titlecard">3. Input and Output</h1>
         </section>
 
         <section>
+          <h2>IO and computation are fundamentally different.</h2>
+
+          <div class="w60 fr">
+            <img data-src="assets/code-data.svg" class="w100">
+          </div>
+
+          <p>Recall the code/data schematic ⇒</p>
+
+          <p>Computation happens inside the box.</p>
+
+          <p>IO reaches outside the box. It is slow and errors
+            are <i>always</i> possible.</p>
+
+          <p>But: every program needs IO.</p>
+        </section>
+
+        <section>
+          <h2>There are many kinds of IO.</h2>
+
+          <ul class="w50 ctr">
+            <li>Files on disk</li>
+            <li>Output to the terminal</li>
+            <li>Network communications</li>
+            <li>Talking to hardware</li>
+          </ul>
+
+          <p class="mt1">The OS provides abstractions so that you can use the
+            same techniques to work with all of these.</p>
+
+          <p>But often you need to understand how they work under the
+            hood.</p>
+        </section>
+
+        <section>
+          <h2>Low-level IO centers on <i>byte streams</i>.</h2>
+
+          <p>(<i>Byte</i>: ordered group of eight booleans [bits]<br>⇒
+            2<sup>8</sup> possible combinations<br>⇒ interpretable as an integer
+            between 0 and 255.)</p>
+
+          <p><i>Stream</i>, empirically: something that lets you read or write
+            a “next” batch of bytes.</p>
+
+          <p>Often valuable, and sometimes easier, to process data in a
+            streaming paradigm.</p>
+
+          <p>But: when reading and writing data, use higher-level
+            abstractions!</p>
+        </section>
+
+        <section>
+          <h2>Python has many ways to do IO.</h2>
+
+          <p>Special objects — <i>file-like objects</i> — represent byte
+            streams.</p>
+
+          <p>Simplest way to do output: <i>print</i> statement
+            for <i>line-oriented text</i>.</p>
+
+          <p>Beyond that: <i>there’s no simple answer</i>. But there are many
+            options. Use them instead of rolling your own!</p>
+        </section>
+
+
+        <section>
           <h1 class="titlecard">4. Control Flow</h1>
         </section>
+
 
         <section>
           <h1 class="titlecard">5. Managing Complexity: Modules</h1>
         </section>
 
+
         <section>
           <h1 class="titlecard">6. Managing Complexity: Objects</h1>
         </section>
+
 
         <section>
           <h1 class="titlecard">7. Error Handling</h1>

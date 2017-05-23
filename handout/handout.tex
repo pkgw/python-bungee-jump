@@ -73,17 +73,16 @@ unfortunately, \i{this lesson will be hurried, and many ideas will be
   presented only superficially}. Sorry, there's just too much to learn!
 
 
-\newpage
-\section{Foundations}
-
-TBD.
+% Haven't come up with a hands-on portion that seems worthwhile.
+%%%\newpage
+%%%\section{Foundations}
 
 
 \newpage
 \section{Data structures}
 
 In this activity we will practice creating various kinds of Python data
-objects. It will necessarily be \i{extremely} superficial.
+objects. Our exploration will be \i{very} superficial.
 
 \subsection*{Foundational data types}
 
@@ -93,7 +92,7 @@ an empty or undefined value), \i{booleans} (true/false values), \i{integers},
 textual characters).
 
 Here are some examples of ways to assign variables to these different kinds of
-values.
+values. Please type all of these in.
 
 \begin{lstlisting}
   a_none_variable = None
@@ -128,8 +127,8 @@ a different cell:
 You can do math with these basic data types using about the notation that you
 would expect. Multiplication is expressed with a single asterisk.
 Exponentiation ($a^b$) is written with a double asterisk. You can ``add'' two
-string variables, which results in their \i{concatenation}: just the first
-string followed by the second string.
+string variables, which results in their \i{concatenation}: the first string
+followed by the second string.
 
 \begin{lstlisting}
   boolean_logic = a_boolean and (not other_boolean)
@@ -157,7 +156,7 @@ You can access the \i{items} (also called \i{elements}) of a list by
 
 \medskip
 \begin{center}
-  \Large \underline{The first list index is zero, not one!}
+  \fbox{\Large The first list index is zero, not one!}
 \end{center}
 \medskip
 
@@ -173,8 +172,7 @@ become clear over time.
   a_list_of_ints[2]
 \end{lstlisting}
 
-Here are some terse examples hinting at what you can do with lists. Sadly, we
-don't have time to go any deeper.
+Here are some terse examples hinting at what you can do with lists.
 
 \begin{lstlisting}
   length_of_my_list = len(a_list_of_ints)
@@ -192,8 +190,8 @@ combine different types of data, but tricky subtleties can arise.
 
 Because sets are unordered, you cannot index them. If you want to get a set's
 items back out, often it is helpful to convert it into a list with the
-\t{list()} function --- keeping in mind that the list you get back will be
-given to you in an unpredictable, changeable order.
+\t{list()} function --- keeping in mind that \i{the list you get back will be
+  given to you in an unpredictable order}.
 
 \begin{lstlisting}
   a_set = {1, 5, 10, 15}
@@ -275,7 +273,7 @@ parentheses are actually optional!
 
 \begin{lstlisting}
   a_tuple = (0, 3, 4)
-  same_tuple = 0, 3, 4
+  equivalent_tuple = 0, 3, 4
   other_tuple = (a_dict, 'hello', empty_set)
   empty_tuple = ()
 \end{lstlisting}
@@ -287,8 +285,7 @@ create a tuple with one element, you must use a special syntax:
   one_item_tuple = (True,)
 \end{lstlisting}
 
-An important fact to remember is that tuples can be used as dictionary keys,
-while lists cannot.
+Because of mutability, lists cannot be used as dictionary keys, but tuples can:
 
 \begin{lstlisting}
   my_dict = {}
@@ -298,9 +295,9 @@ while lists cannot.
   my_dict[[1,2,5]] = 'problem' # !!! raises TypeError
 \end{lstlisting}
 
-You can generally access and index tuples as you would lists, but you cannot
-modify their contents directly. However, while tuples are immutable, they can
-contain data structures that are themselves mutable:
+You can generally access and index tuples as you would lists. While you cannot
+modify tuples' contents directly, tuples \i{can} contain data structures that
+are themselves mutable:
 
 \begin{lstlisting}
   print(other_tuple)
@@ -384,9 +381,9 @@ forget to ask yourself: \i{is the problem in the code, or in the data
 
 
 \newpage
-\section{Input and Output (``I/O'')}
+\section{Input and Output (``IO'')}
 
-We've already encountered one form of I/O: the \s{print()} function. It turns
+We've already encountered one form of IO: the \s{print()} function. It turns
 your Python data into strings and prints them to your Jupyter notebook or, if
 you're writing a command-line program, to your terminal.
 
@@ -449,7 +446,7 @@ This will activate a special mode in Python~2 and do nothing in Python~3. You
 should use this syntax because it helps your code be compatible with Python~3
 and the ``print as a function'' mode is more sensible and flexible overall.
 
-\subsection*{Back to the I/O}
+\subsection*{Back to the IO}
 
 The built-in \s{open()} function opens regular files on your computer's hard
 disk for input or output. We refer to the file's \i{open mode} as either being
@@ -470,13 +467,13 @@ The \s{open()} function returns a new form of Python data, an \i{object} --- a
 \i{file object}, to be specific. You can assign a file object to a variable
 like any other kind of Python data, but it is not a string, or a dict, or one
 of the other basic data structure types. We say that it is \i{opaque}: it's
-like a box that you can hold and move around, but you can't open.
+like a box that you can hold and move around, but you can't see exactly what's
+inside it.
 
 File objects, like almost all other Python objects, come with functions
 attached to them. You can access and call these functions using ``dot syntax''
 as shown below. Here the \s{'\textbackslash n'} bit of the string is a special
-``escape code'' embedded in the string's textual value; we don't have space to
-describe what it's for.
+``escape code'' that indicates that a new line of output should start.
 
 \begin{lstlisting}
   f.write('Here is some text.\n')
@@ -511,14 +508,60 @@ to actually show up until you issue the \s{close()} call. While Python will
 eventually write out your data if you forget the \s{close()}, including it
 gives you precise control over when this happens.
 
-The above is just one example of the subtleties that arise when doing I/O.
+The above is just one example of the subtleties that arise when doing IO.
 There are \i{many} more. What happens when two programs try to write to the
 same file? What happens when the file is accessed over a network and the
 network goes down? What happens if a file is deleted while you're reading it?
 The answers to these questions are defined by the underlying operating system,
-not Python. Since every useful program has to do I/O, it is \i{very}
-worthwhile to spend time learning about the fundamental rules of I/O on
-Unix-like operating systems.
+not Python. Since every useful program has to do IO, it is \i{very} worthwhile
+to spend time learning about the fundamental rules of IO on Unix-like
+operating systems.
+
+\subsection*{Network IO}
+
+Thanks to the infrastructure that Python provides, reading and writing over
+the network is almost as easy as reading and writing files from the local hard
+disk. For instance, downloading a file from the internet takes just a few
+lines of code:
+
+\begin{lstlisting}
+  from urllib2 import urlopen
+  from shutil import copyfileobj
+  source = urlopen('http://tinyurl.com/l66kod5')
+  dest = open('datatable.txt', 'w')
+  copyfileobj(source, dest)
+  source.close()
+  dest.close()
+\end{lstlisting}
+
+Above, the first two lines load standard Python \i{modules} that provide
+pre-packaged routines that allow us to avoid a lot of work that we'd otherwise
+have to do ourselves.
+
+\subsection*{High-Level IO}
+
+The \s{print} statement is useful but it is not a good solution for anything
+other than ad-hoc diagnostics and messages intended for users.
+
+For more important data, it is better to choose a preexisting, standard data
+format that is suited to the data. No matter what format you choose, there
+will probably be a Python \i{module} that provides functions that make it easy
+to read and write the data format.
+
+For instance, the file we downloaded contains data in the textual table format
+developed by the Centre de Données astronomiques de Strasbourg (CDS). The
+popular Python module \href{http://www.astropy.org/}{AstroPy} can read these
+files into customized table data objects.
+
+\begin{lstlisting}
+  from astropy.io import ascii
+  table = ascii.read('datatable.txt')
+  table
+\end{lstlisting}
+
+Here, the AstroPy table object has special integration with Jupyter so that
+when we display its value in the notebook, you get a fancy representation of
+the table contents.
 
 
 \end{document}
