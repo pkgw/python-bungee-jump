@@ -86,8 +86,8 @@
         <section>
           <h2>Code is an edifice of human culture.</h2>
 
-          <p>Every program exists in some engineered context: an
-            “interpreter,” a CPU, knitting needles and yarn, …</p>
+          <p>Every program exists in some engineered context: a CPU, knitting
+            needles and yarn, …</p>
 
           <p>These contexts are as rich as any other human endeavors: they
             have histories, factions, fads, masterpieces, and so on.</p>
@@ -95,8 +95,8 @@
           <p>It is hard to say how important it is to understand this
             context.</p>
 
-          <p>But: bad programs often go “against the grain” of the
-            abstractions on which they’re founded.</p>
+          <p>But: bad programs often go “against the grain” of the context in
+            which they operate.</p>
         </section>
 
         <section>
@@ -118,9 +118,67 @@
 
           <p>There is as much subtlety in designing your data as there is in your code!</p>
 
-          <div class="w75 ctr">
+          <div class="w70 ctr">
             <img data-src="assets/code-data.svg" class="w100">
           </div>
+        </section>
+
+        <section>
+          <h2>Every language has <i>types</i> of data.</h2>
+
+          <p>Python provides “core” types:</p>
+
+          <ul class="squish">
+            <li>The “None” type: an empty or undefined value</li>
+            <li>Booleans (“bools”): true/false values</li>
+            <li>Integers</li>
+            <li>“Floats”: approximations of real numbers</li>
+            <li>“Strings”: text — sequences of characters</li>
+          </ul>
+
+          <p class="mt1">It also has <i>collections</i> for making <i>data
+          structures</i>:</p>
+
+          <ul class="squish">
+            <li>Lists</li>
+            <li>Sets</li>
+            <li>Dictionaries (“dicts”)</li>
+          </ul>
+
+          <p class="mt1">And <i>objects</i>, to be explored later.</p>
+        </section>
+
+        <section>
+          <h2>Variables are <i>names</i> for data.</h2>
+
+          <p>Variable assignment in Python is totally standard, and also
+            totally weird if you’re not used to it:</p>
+
+          <p class="w80 ctr"><tt>x = 1</tt></p>
+
+          <p>In Python it is important to distinguish between a piece of data
+            itself and the name used to refer to it.</p>
+
+          <pre class="w80 ctr">a = ['list', 'of', 'words']
+b = a
+b[1] = 'new'
+print(a[1])</pre>
+
+          <p class="mt1">This tricky <i>indirection</i> concept comes up over
+            and over in computing.</p>
+        </section>
+
+        <section>
+          <h2><i>Mutable</i> data have pitfalls.</h2>
+
+          <p>The trip-up in the previous slide only happened because the data
+            underlying <i>a</i> could be modified.</p>
+
+          <p>In simple, linear programs, mutations are relatively easy to keep
+            track of.</p>
+
+          <p>Avoiding mutability makes it <i>much</i> easier to build complex
+            software systems.</p>
         </section>
 
         <section>

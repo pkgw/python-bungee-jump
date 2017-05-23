@@ -99,21 +99,10 @@ body {
 }
 
 .reveal h1.maintitle1 {
-  /*text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*//* black outline */
-  text-align: left;
+  text-align: center;
   color: #000;
   font-size: 2.5em;
   line-height: 1em;
-}
-
-.reveal h1.maintitle2 {
-  /&text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;*//* black outline */
-  text-align: left;
-  color: #000;
-  font-size: 2em;
-  line-height: 1em;
-  margin-top: 0.4em;
-  margin-left: 1em;
 }
 
 .reveal h1.titlecard {
@@ -192,6 +181,15 @@ body {
 .reveal sup {
   font-size: smaller;
   vertical-align: super;
+}
+
+.reveal tt {
+  font-family: monospace;
+}
+
+.reveal pre {
+  font-family: monospace;
+  text-align: left;
 }
 
 
@@ -478,223 +476,4 @@ body {
 
 .reveal .spacious li {
   margin-bottom: 1.5em;
-}
-
-/* Sliders for Dulk 1985 */
-
-input[type=range]{
-  border: 1px solid white; /* fix for FF unable to apply focus style bug  */
-  width: 200px; /*required for proper track sizing in FF*/
-}
-
-input[type=range]::-moz-range-track {
-  width: 200px;
-  height: 5px;
-  background: #ddd;
-  border: none;
-  border-radius: 3px;
-}
-
-input[type=range]::-moz-range-thumb {
-  border: none;
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: goldenrod;
-}
-
-input[type=range]:-moz-focusring { /* hide the outline behind the border */
-  outline: 1px solid white;
-  outline-offset: -1px;
-}
-
-input[type=range]:focus::-moz-range-track {
-  background: #ccc;
-}
-
-
-/* Styling for Dulk1985 interactive figure */
-
-#dulk1985 .dulk-line {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-}
-
-#dulk1985 .n33370b-line {
-  fill: none;
-  stroke: crimson;
-  stroke-width: 2px;
-}
-
-#dulk1985 .n33370b-dot {
-  stroke: none;
-  fill: crimson;
-}
-
-#dulk1985 .lp349-line {
-  fill: none;
-  stroke: forestgreen;
-  stroke-width: 2px;
-}
-
-#dulk1985 .lp349-dot {
-  stroke: none;
-  fill: forestgreen;
-}
-
-#dulk1985 .axis {
-  font: 24px sans-serif;
-}
-
-#dulk1985 .track,
-#dulk1985 .track-inset,
-#dulk1985 .track-overlay {
-  stroke-linecap: round;
-}
-
-#dulk1985 .track {
-  stroke: #000;
-  stroke-opacity: 0.3;
-  stroke-width: 10px;
-}
-
-#dulk1985 .track-inset {
-  stroke: #ddd;
-  stroke-width: 8px;
-}
-
-#dulk1985 .track-overlay {
-  pointer-events: stroke;
-  stroke-width: 50px;
-  cursor: crosshair;
-}
-
-#dulk1985 .handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-opacity: 0.5;
-  stroke-width: 1.25px;
-}
-
-.reveal .d85-controls td {
-  background-color: #fff !important; /* remove row striping */
-  border: 0px; /* remove column rules */
-}
-
-.reveal .d85-controls label {
-  width: 150px;
-  display: inline-block;
-  text-align: left;
-}
-
-/* Styling for xenia interactive figure */
-
-#xenia .outline {
-  fill: none;
-  stroke: #111;
-  stroke-width: 2px;
-}
-
-#xenia .equator {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-}
-
-#xenia .prime-meridian {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-  stroke-dasharray: 3, 3;
-}
-
-#xenia .magnetic-north-cap {
-  fill: rgba(179, 179, 255, 0.7);
-  stroke: none;
-}
-
-#xenia .magnetic-south-cap {
-  fill: rgba(255, 128, 128, 0.7);
-  stroke: none;
-}
-
-#xenia .stokes-i {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-}
-
-#xenia .stokes-v {
-  fill: none;
-  stroke: steelblue;
-  stroke-width: 2px;
-  stroke-dasharray: 3, 3;
-}
-
-#xenia .current-cml {
-  fill: none;
-  stroke: rgba(240, 30, 30, 0.5);
-  stroke-width: 2px;
-}
-
-#xenia .lightcurve-zero-line {
-  fill: none;
-  stroke: rgba(30, 30, 30, 0.3);
-  stroke-width: 2px;
-}
-
-#xenia .lightcurve-hundred-line {
-  fill: none;
-  stroke: rgba(30, 30, 30, 0.3);
-  stroke-width: 2px;
-  stroke-dasharray: 3, 3;
-}
-
-#xenia .label {
-}
-
-#xenia .axis {
-  font: 24px sans-serif;
-}
-
-#xenia .track,
-#xenia .track-inset,
-#xenia .track-overlay {
-  stroke-linecap: round;
-}
-
-#xenia .track {
-  stroke: #000;
-  stroke-opacity: 0.3;
-  stroke-width: 10px;
-}
-
-#xenia .track-inset {
-  stroke: #ddd;
-  stroke-width: 8px;
-}
-
-#xenia .track-overlay {
-  pointer-events: stroke;
-  stroke-width: 50px;
-  cursor: crosshair;
-}
-
-#xenia .handle {
-  fill: #fff;
-  stroke: #000;
-  stroke-opacity: 0.5;
-  stroke-width: 1.25px;
-}
-
-.reveal .xenia-controls td {
-  background-color: #fff !important; /* remove row striping */
-  border: 0px; /* remove column rules */
-}
-
-.reveal .xenia-controls label {
-  width: 150px;
-  display: inline-block;
-  text-align: left;
 }
