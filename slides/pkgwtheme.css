@@ -190,6 +190,8 @@ body {
 .reveal pre {
   font-family: monospace;
   text-align: left;
+  width: 80%;
+  margin: 0.2em auto 1em auto;
 }
 
 

@@ -69,6 +69,8 @@
           <p>The justifiable investment in a program scales with how much
             value it generates: how often it is run, the costs if it
             fails.</p>
+
+          <p>(This is why we’re teaching you Python 2 and not Python 3.)</p>
         </section>
 
         <section>
@@ -161,13 +163,13 @@
           <p>In Python it is important to distinguish between a piece of data
             itself and the name used to refer to it.</p>
 
-          <pre class="w80 ctr">a = ['list', 'of', 'words']
+          <pre>a = ['list', 'of', 'words']
 b = a
 b[1] = 'new'
 print(a[1])</pre>
 
-          <p class="mt1">This tricky <i>indirection</i> concept comes up over
-            and over in computing.</p>
+          <p>This tricky <i>indirection</i> concept comes up over and over in
+            computing.</p>
         </section>
 
         <section>
@@ -185,7 +187,104 @@ print(a[1])</pre>
 
 
         <section>
-          <h1 class="titlecard">3. Input and Output</h1>
+          <h1 class="titlecard">3. Control Flow</h1>
+        </section>
+
+        <section>
+          <h2>Real programs don’t run linearly.</h2>
+
+          <p>Our first examples ran commands strictly in sequence.</p>
+
+          <p>Real programs have to make choices or run loops. The geometry of
+            these <i>branches</i> define its <i>control flow</i>.</p>
+
+          <p>Python provides a very standard set of statements for managing
+            control flow.</p>
+        </section>
+
+        <section>
+          <h2><tt>if</tt> statements are universal.</h2>
+
+          <p>They only run a certain block of statements if a certain
+            expression evaluates to a “truthy” value.</p>
+
+          <pre><b>if</b> x &gt; 4:
+    x = 4
+    print('Capped x.')
+print(x)</pre>
+
+          <p>Python groups statements into <i>blocks</i> by looking at their
+            indentation!!! Most languages don’t.</p>
+        </section>
+
+        <section>
+          <h2><tt>if</tt> statements are universal.</h2>
+
+          <p>Full generality:</p>
+
+          <pre><b>if</b> {condition-1}:
+    {block-1}
+<b>elif</b> {condition-2}:
+    {block-2}
+...
+<b>elif</b> {condition-n}:
+    {block-n}
+<b>else</b>:
+    {block-(n+1)}</pre>
+        </section>
+
+        <section>
+          <h2><tt>while</tt> loops are also universal.</h2>
+
+          <p>Example:</p>
+
+          <pre>n_iterations = 0
+<b>while</b> n_iterations &lt; 10:
+    do_some_stuff()
+    n_iterations += 1
+print('Finished iterating.')</pre>
+        </section>
+
+        <section>
+          <h2><tt>while</tt> loops are also universal.</h2>
+
+          <p>Example:</p>
+
+          <pre>total = 0
+<b>while</b> True:
+    x = get_next_x()
+    <b>if</b> x &lt; 0:
+        print('Quitting')
+        <b>break</b>
+    <b>if</b> x &gt; 9:
+        print('Ignoring')
+        <b>continue</b>
+    total += x
+print(total)</pre>
+        </section>
+
+        <section>
+          <h2><tt>for</tt> loops are for containers.</h2>
+
+          <p>Example:</p>
+
+          <pre>a_list = [1, 1, 2, 3, 5]
+
+<b>for</b> x <b>in</b> a_list:
+    print(x)
+
+a_dict = {'key1': 8, 'key2': 13}
+
+<b>for</b> k <b>in</b> a_dict.keys():
+    print(k)
+
+<b>for</b> k_and_v <b>in</b> a_dict.items():
+    print(k_and_v)</pre>
+        </section>
+
+
+        <section>
+          <h1 class="titlecard">4. Input and Output</h1>
         </section>
 
         <section>
@@ -245,16 +344,11 @@ print(a[1])</pre>
           <p>Special objects — <i>file-like objects</i> — represent byte
             streams.</p>
 
-          <p>Simplest way to do output: <i>print</i> statement
+          <p>Simplest way to do output: <tt>print</tt> statement
             for <i>line-oriented text</i>.</p>
 
           <p>Beyond that: <i>there’s no simple answer</i>. But there are many
             options. Use them instead of rolling your own!</p>
-        </section>
-
-
-        <section>
-          <h1 class="titlecard">4. Control Flow</h1>
         </section>
 
 
