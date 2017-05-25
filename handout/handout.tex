@@ -395,7 +395,7 @@ arrange your logic such that the first indented block is the short one:
 
 \begin{lstlisting}
   for item in other_tuple:
-      if x < 5 or len(other_tuple) != 2:
+      if x < 5 or len(item) != 2:
           print 'Nothing to do.'
       else:
           # Hundreds of lines of code go here.
@@ -407,7 +407,7 @@ altogether:
 
 \begin{lstlisting}
   for item in other_tuple:
-      if x < 5 or len(other_tuple) != 2:
+      if x < 5 or len(item) != 2:
           print 'Nothing to do.'
           continue
 
@@ -440,7 +440,8 @@ In Python you can define your own functions like this:
       return (opposite**2 + adjacent**2)**0.5
 \end{lstlisting}
 
-Here, the \s{return} statement tells the function to exit and yield the
+Here, the \s{def} line declares the name of the function and its arguments,
+and the \s{return} statement tells the function to exit and yield the
 specified value. Let's check that our function makes sense:
 
 \begin{lstlisting}
@@ -449,15 +450,15 @@ specified value. Let's check that our function makes sense:
 
 The functions that we're used to from most branches of mathematics, however,
 don't have any kind of ``control flow'' as we've been discussing. For
-instance, there's no standard mathematical notation $G(a,b) = \ldots$ for a
-function $G$ that computes the greatest common divisor (GCD) of two integers.
-But in Python, we can write:
+instance, there's no standard ``closed-form expression'' $G(a,b) = \ldots$ for
+a function $G$ that computes the greatest common divisor (GCD) of two
+integers. But in Python, we can write:
 
 \begin{lstlisting}
   def G(a, b):
-      "Calculate the greatest common divisor of a and b."
+      "Return the greatest common divisor of integers a and b."
       while b:
-          a, b = b, a % b
+          (a, b) = (b, a % b) # this is a tricky line!
       return a
 \end{lstlisting}
 
@@ -475,6 +476,50 @@ Let's test again:
   print 'b =', b
   G(a, b)
 \end{lstlisting}
+
+You can put a \s{return} statement anywhere in a function you want. One way to
+think about functions, then, is that they are powerful tools for developing a
+clear and concise control flow. For instance, say we have a function that
+describes a variable:
+
+\begin{lstlisting}
+  def describe(v):
+      result = None
+      if v is None:
+          result = 'it is None'
+      elif isinstance(v, int): # is v an "instance" of the integer type?
+          if v < 0:
+              result = 'it is a negative integer'
+          else:
+              result = 'it is a nonnegative integer'
+      else:
+          result = 'it is neither None nor an integer'
+      return result
+
+  print describe(None)
+  print describe(0)
+\end{lstlisting}
+
+By using \s{return} statements judiciously, we can ``pick off'' cases
+one-by-one and significantly clarify things:
+
+\begin{lstlisting}
+  def describe(v):
+      if v is None:
+          return 'it is None'
+
+      if not isinstance(v, int):
+          return 'it is neither None nor an integer'
+
+      if v < 0:
+          return 'it is a negative integer'
+
+      return 'it is a nonnegative integer'
+
+  print describe(-1)
+\end{lstlisting}
+
+\i{If you have extra time:} what happens when you \s{describe(-1.0)}? Why?
 
 
 \newpage
