@@ -399,7 +399,7 @@ loop. At the beginning of each iteration, consider the values of the variables
 \s{z} and \s{k} and predict how the program's control flow will progress.
 \typeit Proceed with \s{n} until you reach ``pause point~C.''
 
-\subsection*{Avoiding Rightward Drift}
+\subsection*{Avoiding rightward drift}
 
 The control flow throughout a program should, ideally, be fairly
 straightforward, and one should be able to get a sense of it from skimming the
@@ -450,70 +450,49 @@ control flow tidy and avoid rightward drift.
 \newpage
 \section{Input and Output (``IO'')}
 
-We've already encountered one form of IO: the \s{print()} function. It turns
+We will now try out some basic IO in Python and explore the importance of your
+data format choices.
+
+For this hands-on activity, return to your Jupyter notebook.
+
+\subsection*{The \s{print} statement}
+
+We've already encountered one form of IO: the \s{print} statement. It turns
 your Python data into strings and prints them to your Jupyter notebook or, if
 you're writing a command-line program, to your terminal.
 
-\subsection*{We are Very, Very Sorry}
+Here's an \i{important disclaimer:} in Python~3, \s{print()} is a function,
+not a special statement. This is a much, much better way to do things, but it
+is not compatible with Python~2, and this fact makes it very annoying to port
+code from version~2 to version~3. You \i{should} learn about the
+``\s{print\_function}'' ``\s{\_\_future\_\_} import,'' which lets you use the
+\s{print()} function in Python~2 code, and use it everywhere you can. For
+annoying technical reasons, that's not a good solution for today, so we stick
+with the old-fashioned statement form of \s{print}.
 
-We now have to spend some time on boring technical history. You shouldn't need
-to worry about it, but as things stand in the world of Python, you do.
-
-We have told you that there are are two main versions of Python out there,
-Python~2 and Python~3, and that we are using Python~2. One of the key
-differences between the two is that in Python~2, \s{print} is actually a
-special form of syntax in the language, not a built-in function. This was
-eventually recognized to be an enormous annoyance, so it was fixed in
-Python~3.
-
-In Python~3, you can print multiple values in one line by giving the print
-function multiple arguments. The values will be separated by spaces in the
-output. The resulting code might look like:
+The \s{print} statement is usually very straightforward:
 
 \begin{lstlisting}
-  x = 17
-  print('The value of x is', x) # Python 3 style, but won't crash Python 2
+  x = 4
+  print 'x = ', x
 \end{lstlisting}
 
-In Python~2, there are no parentheses:
+It takes a comma-separated list of values, converts them into text, and prints
+them all on a line, separated by spaces. The fact that it only separates
+things with spaces can get a little annoying if you want to print out several
+variables at once. Here's our recommended pattern for doing so:
 
 \begin{lstlisting}
-  print 'The value of x is', x # Python 2 style; will fail in Python 3
+  y = 17
+  z = 3.14
+  print '(x, y, z) =', (x, y, z)
 \end{lstlisting}
 
-In the examples in this handout thus far, we have been tricky. Because
-parentheses around a single value are interpreted by Python to represent
-grouping, you can get consistent results in both versions of Python when
-printing single values:
+This approach doesn't require you to type that many quotes or parentheses. It
+is tempting to just write statements like \s{print x, y, z}, but take it from
+us: printing numbers without hints as to their context gets confusing quickly.
 
-\begin{lstlisting}
-  print(x) # same result in both Python 2 and Python 3
-\end{lstlisting}
-
-This is the reason that the first example, with parentheses, doesn't crash in
-Python~2, although it gives results that are probably not what you want.
-Version~2 of Python interprets the first example as asking it to print out a
-tuple made out of a string and an integer. This is close to what you want, but
-it adds parentheses and commas around the values that get printed.
-
-\begin{lstlisting}
-  python_2s_view = ('The value of x is', x)
-  print python_2s_view
-\end{lstlisting}
-
-If you are writing a Python script, you can add a special command that will
-give you ``print as a function'' behavior in \i{both} Python~3 and Python~2.
-At the top of your file, you can write:
-
-\begin{lstlisting}
-  from __future__ import print_function # !!! might raise error in Jupyter
-\end{lstlisting}
-
-This will activate a special mode in Python~2 and do nothing in Python~3. You
-should use this syntax because it helps your code be compatible with Python~3
-and the ``print as a function'' mode is more sensible and flexible overall.
-
-\subsection*{Back to the IO}
+\subsection*{IO with files}
 
 The built-in \s{open()} function opens regular files on your computer's hard
 disk for input or output. We refer to the file's \i{open mode} as either being
@@ -524,23 +503,16 @@ is denoted with a special string argument that is passed to \s{open()}.
   f = open('mydata.txt', 'w') # the "w" means to open for writing
 \end{lstlisting}
 
-Here's an important thing to know: \i{when you open a file for writing, the
-  operating system will delete all of its contents and give you an empty
-  file!} There is a special \s{"a"} mode for \i{appending} data to an existing
-file without erasing its contents. It may seem surprising at first, but often
-the default behavior (\i{truncation}) is preferable to appending.
-
 The \s{open()} function returns a new form of Python data, an \i{object} --- a
-\i{file object}, to be specific. You can assign a file object to a variable
-like any other kind of Python data, but it is not a string, or a dict, or one
-of the other basic data structure types. We say that it is \i{opaque}: it's
-like a box that you can hold and move around, but you can't see exactly what's
-inside it.
+\i{file object}, to be specific. These objects are their own type, different
+than floats, lists, etc.
 
-File objects, like almost all other Python objects, come with functions
+File objects, and almost all other Python objects, come with functions
 attached to them. You can access and call these functions using ``dot syntax''
-as shown below. Here the \s{'\textbackslash n'} bit of the string is a special
-``escape code'' that indicates that a new line of output should start.
+as shown below. In the first line, \s{write()} is a special function --- a
+\i{method} --- that operates on the variable \s{f}. Here the
+\s{'\textbackslash n'} bit of the string is a special ``escape code'' that
+indicates that a new line of output should start.
 
 \begin{lstlisting}
   f.write('Here is some text.\n')
@@ -555,7 +527,7 @@ file instead of to the terminal:
   print >>f, 'The value of x is', x
 \end{lstlisting}
 
-When you're done with a file that you've opened, you should always close it:
+When you're done with a file that you've opened, close it:
 
 \begin{lstlisting}
   f.close()
@@ -568,27 +540,38 @@ the variable still exists, but it's illegal to do anything with it:
   print >>f, 'This will fail' # !!! raises ValueError
 \end{lstlisting}
 
-One reason that it's important to close files is \i{buffering}: for efficiency
-reason, Python will not actually write data to disk every time you issue a
-\s{print} or \s{write()} command. The last data in your file are very unlikely
-to actually show up until you issue the \s{close()} call. While Python will
-eventually write out your data if you forget the \s{close()}, including it
-gives you precise control over when this happens.
+There's no need to assign the result of the \s{open()} function to a variable
+if we're not going to keep it around for long. Therefore, to print the
+contents of the file we just wrote, we can just do this:
 
-The above is just one example of the subtleties that arise when doing IO.
-There are \i{many} more. What happens when two programs try to write to the
-same file? What happens when the file is accessed over a network and the
-network goes down? What happens if a file is deleted while you're reading it?
-The answers to these questions are defined by the underlying operating system,
-not Python. Since every useful program has to do IO, it is \i{very} worthwhile
-to spend time learning about the fundamental rules of IO on Unix-like
-operating systems.
+\begin{lstlisting}
+  print open('mydata.txt', 'r').read()
+\end{lstlisting}
+
+Here we are being naughty and not calling \s{close()} on the file object;
+that's forgivable if you're just reading the file in one go.
+
+%%One reason that it's important to close files is \i{buffering}: for efficiency
+%%reason, Python will not actually write data to disk every time you issue a
+%%\s{print} or \s{write()} command. The last data in your file are very unlikely
+%%to actually show up until you issue the \s{close()} call. While Python will
+%%eventually write out your data if you forget the \s{close()}, including it
+%%gives you precise control over when this happens.
+%%
+%%The above is just one example of the subtleties that arise when doing IO.
+%%There are \i{many} more. What happens when two programs try to write to the
+%%same file? What happens when the file is accessed over a network and the
+%%network goes down? What happens if a file is deleted while you're reading it?
+%%The answers to these questions are defined by the underlying operating system,
+%%not Python. Since every useful program has to do IO, it is \i{very} worthwhile
+%%to spend time learning about the fundamental rules of IO on Unix-like
+%%operating systems.
 
 \subsection*{Network IO}
 
 Thanks to the infrastructure that Python provides, reading and writing over
 the network is almost as easy as reading and writing files from the local hard
-disk. For instance, downloading a file from the internet takes just a few
+disk. For instance, saving a file from the internet to disk takes just a few
 lines of code:
 
 \begin{lstlisting}
@@ -605,20 +588,25 @@ Above, the first two lines load standard Python \i{modules} that provide
 pre-packaged routines that allow us to avoid a lot of work that we'd otherwise
 have to do ourselves.
 
+This cell probably took a half-second to run, since your notebook actually
+connected to the internet and fetched a file. While we didn't see any
+reassuring output, fear not: if no error message popped up, your download
+succeeded!
+
+
 \subsection*{High-Level IO}
 
 The \s{print} statement is useful but it is not a good solution for anything
 other than ad-hoc diagnostics and messages intended for users.
 
 For more important data, it is better to choose a preexisting, standard data
-format that is suited to the data. No matter what format you choose, there
-will probably be a Python \i{module} that provides functions that make it easy
-to read and write the data format.
+format that is suited to the data. There is a Python module to read or write
+essentially any data format you can think of.
 
-For instance, the file we downloaded contains data in the textual table format
-developed by the Centre de Données astronomiques de Strasbourg (CDS). The
-popular Python module \href{http://www.astropy.org/}{AstroPy} can read these
-files into customized table data objects.
+For instance, the file we just downloaded contains data in the textual table
+format developed by the Centre de Données astronomiques de Strasbourg (CDS).
+The popular Python module \href{http://www.astropy.org/}{AstroPy} can read
+these files into customized table data objects.
 
 \begin{lstlisting}
   from astropy.io import ascii
@@ -629,6 +617,42 @@ files into customized table data objects.
 Here, the AstroPy table object has special integration with Jupyter so that
 when we display its value in the notebook, you get a fancy representation of
 the table contents.
+
+\subsection*{The importance of format choice}
+
+Most scientists don't appreciate just how important it is to choose a data
+format carefully.
+
+Most also don't appreciate how many choices there are to be made. There's the
+choice of internal data structures to be used by a running program; the
+storage format for individual data files; and there's how collections of data
+files are organized and managed. We'll demonstrate the sort of problem that
+can arise when you're dealing with collections of data files.
+
+Imagine that we have a survey full of images and we want to extract some
+statistics from each image and compile them into a table. Here we define a
+custom Python function that pretends to do this; we don't have any images so
+we just record what we \i{would} do if the code were real, writing one line
+for each processed image:
+
+\begin{lstlisting}
+  def extract_stats(job_id, img_num, dest):
+      print >>dest, 'Processing job', job_id, 'looked at image', img_num
+\end{lstlisting}
+
+To speed things up, we might run four processors in parallel. This chunk of
+code goes ahead and does just that:
+
+\begin{lstlisting}
+  def process_group(job_id):
+      dest = open('results.txt', 'a', 0) # 'a'ppend to file
+      for img_num in range(job_id, 20, 4):
+          extract_stats(job_id, img_num, dest)
+      dest.close()
+
+  import multiprocessing
+  multiprocessing.Pool(4).map(process_group, [0, 1, 2, 3])        
+\end{lstlisting}
 
 
 
