@@ -1,7 +1,7 @@
 \documentclass[letterpaper, 12pt, titlepage, twoside]{article}
 \input setup
 
-\title{General-Purpose Programming in Python}
+\title{A Whirlwind Tour of Programming in Python}
 \author{P. K. G. Williams (\href{mailto:peter@newton.cx}{peter@newton.cx})}
 \date{\today \\ version \t{\gitversion}}
 
@@ -10,147 +10,176 @@
 
 \section*{Introduction\markboth{Introduction}{}}
 
-This handout will walk you through some of the key concepts of general-purpose
-computer programming using the Python language.
+This handout accompanies a 90-minute introduction into computer programming
+using the \href{https://www.python.org/}{Python} language. It is intended for
+students who have never programmed a computer using a formal language before,
+although we hope that some of the ideas we present will be interesting to more
+experienced students as well.
 
-We assume that you are using an interactive Jupyter notebook to execute Python
-commands in small pieces. Code that you should type is displayed this way:
+It is \i{totally impossible} to teach anything but the most superficial
+elements of the Python language or the principles of computer science in
+90~minutes.
+
+Given that reality, for this lesson we have chosen to just \i{visit} a few
+topics that are important to the craft of writing software and illustrate them
+with some \i{extremely limited} examples in Python. Our treatments of both the
+``big picture'' ideas \i{and} the basics of writing Python programs will be
+dissatisfying. We hope, however, that this lesson will plant seeds that will
+grow over time.
+
+Due to the context in which this lesson was written, it is aimed at
+\i{version~2} of Python, not version~3. Students are expected to have a laptop
+available that is running the interactive \href{https://jupyter.org/}{Jupyter}
+notebook. The lesson is divided into seven activities, each of which has a
+``mini-lecture'' component and a hands-on component. Each activity is intended
+to take about 15~minutes to complete.
+
+
+\newpage
+\section{Foundations}
+
+In this hands-on activity, we'll just make sure that you can get Jupyter
+running and show you some basics about how to run commands in a Jupyter
+notebook. Because we're just getting started, there's a lot more explanatory
+text than you'll find in the other activities.
+
+If you haven't already, start Jupyter and create a new, empty notebook. We've
+written this lesson assuming that you've already seen how to do this --- ask
+for help from a neighbor or a helper if not, or if you run into any problems.
+
+In this handout, text styled the following way is code that you should type
+into your notebook.
 
 \begin{lstlisting}
-  print('Hello, world!')
+  print 'Hello, world!'
   x = 1
 \end{lstlisting}
 
-When using Jupyter, you should end most lines by just hitting the \s{Enter}
-key as usual. To actually \i{run} the block of code that you have just typed,
-finish the final line by hitting \s{Shift-Enter} (that is, the \s{Enter} key
-with the \s{Shift} key also held down). Each numbered chunk of code that you
-type in your Jupyter notebook is called a \i{cell}. \i{You must separate cells
-  in the notebook in exactly the way written here in order to get the desired
-  outputs}.
+Type this code now, \i{exactly} as it is shown here --- be careful with
+punctuation and spaces. When using Jupyter, start new lines of code by just
+hitting the \s{Enter} key as usual.
 
-We are \i{very intentionally} forcing you to type the code yourself! We feel
-that this is very important for learning how to program in any particular
-language. When you're writing your own programs, you'll certainly have to type
-everything yourself, and there's no time like the present to start practicing.
+(By the way, we are \i{very intentionally} forcing you to type this code
+yourself! You'll have to type a lot of code yourself eventually; might as well
+start now.)
 
-As ever, please be very careful about typing in commands \i{exactly} as they
-appear in printed form. Punctuation characters that look quite similar are
-often interpreted quite differently by Python.
+To actually \i{run} the block of code that you have just typed, type
+\s{Shift-Enter} (that is, the \s{Enter} key with the \s{Shift} key also held
+down). You should see the message ``Hello, world!'' appear and a new block for
+code entry appear. Each of these blocks is a \i{cell} in your notebook.
 
-One exception: we'll write some explanatory text as Python comments, which are
-delimited with hash signs (\s{\#}). You can skip typing the \s{\#} and
-everthing that comes after it.
+The horizontal bars delimit pieces of code that you should type in separate
+cells, typing \s{Shift-Enter} at the end of each cell. For instance:
 
 \begin{lstlisting}
-  x = 7 # now x is 7, but you don't need to type this part
+  x
+\end{lstlisting}
+\begin{lstlisting}
+  y = 1.6
+  y
+\end{lstlisting}
+
+This means that you should type these two pieces code in separate cells,
+running the first one before you start typing the second one. Do so now. You
+should see the values ``1'' and ``1.6'' printed back at you.
+
+\i{From here on out, if you see a code listing as above, always assume that
+  you should type it in and run it in your notebook. Skipping cells might
+  cause later demonstrations to fail.}
+
+There is an exception to our request that you type things precisely as
+written. Sometimes we'll write some explanatory text as Python \i{comments}.
+These are delimited with hash signs (\s{\#}). In these activities you don't
+need to type the comments. When there's a line with a \s{\#}, skip it and
+everything that comes after it.
+
+\begin{lstlisting}
+  x = 7 #<== don't bother typing this or anything after it
+  x
 \end{lstlisting}
 
 Every so often we intentionally have you type a command that results in an
 error. We will indicate this with a comment about ``raising'' a particular
-kind of error.
+kind of error:
 
 \begin{lstlisting}
-  assert False # !!! raises AssertionError
+  assert x == 2 # !!! raises AssertionError
 \end{lstlisting}
 
-\i{Only} lines with these annotations should result in error messages. These
-lines will come at the ends of cells, since any code within a cell that comes
-after an error will not be run. Every statement \i{before} the problematic
-line, however, will have taken effect.
+Running this line should produce some red text and technical information
+indicating an error. Eventually you should learn how to make sense of the
+information, but we'll ignore it for now.
 
-Jupyter has a smart editor that tries to automatically manage the
-\i{indentation} of your code --- the white space at the beginning of each
-line. Its automatic indentation should line up with what we show here. If it
-doesn't, please ask a helper for advice. Using an editor with proper automatic
-indentation is \i{enormously} important when coding in Python.
+\i{Only} lines with these ``raise'' annotations should result in error
+messages. These lines will come at the ends of cells, since any code within a
+cell that comes after an error will not be run. If some other line of code
+causes an error, something has gone wrong and you should ask a neighbor or
+helper to take a look.
 
-As you might expect, the topic of ``general-purpose programming'' is very
-broad. Meanwhile there is only a small amount of time available for this
-lesson. Given these constraints we have opted to go over a relatively large
-number of topics while spending only a small amount of time on each on. So,
-unfortunately, \i{this lesson will be hurried, and many ideas will be
-  presented only superficially}. Sorry, there's just too much to learn!
+Because of the limited time available, we're going to have to ask you to do a
+lot of ``monkey see, monkey do'' coding: we'll have you type in code without
+giving you a fair chance to be able to understand it. For instance, type and
+run this code, \i{making sure to reproduce the spaces after the \s{while}
+  keyword}:
 
+\begin{lstlisting}
+  import pylab as pl
+  import numpy as np
+  i = 99
+  x, y = np.mgrid[-2:2:999j, -2:2:999j]
+  c = z = x * 1j + y
+  while i:
+      x[np.abs(z) > 2] = i
+      z = z * z + c
+      i -= 1
+  pl.show(pl.imshow(x))
+\end{lstlisting}
 
-\newpage
-\section*{Other Resources}
+If you've done this right, you'll see some warning messages get printed in
+red, and then an image of the Mandlebrot set will appear after a few seconds.
+You might have to scroll your notebook down to see everything.
 
-Many, many people have written many, many books aimed at beginning
-programmers. Many of them are about Python and will be absolutely relevant to
-you. Here are a few that you might want to check out.
+The demo above might be neat, but we recognize that it is not very
+instructive, if not actively frustrating, for most people. Apologies --- we
+have made a choice to try to expose you to several big ideas about
+programming, at the expense of building a solid foundation for those ideas.
 
-\i{How to Think Like a Computer Scientist: Learning with Python}, by Allen
-Downey, Jeffrey Elkner, and Chris Meyers. A 280-page textbook freely
-downloadable from:
-\url{http://www.greenteapress.com/thinkpython/thinkCSpy/thinkCSpy.pdf}. The
-book's Appendix~C contains its own list of recommended readings and resources.
+But a foundation is essential! We recommend a textbook, \i{How to Think Like a
+  Computer Scientist: Learning with Python}, by Allen Downey, Jeffrey Elkner,
+and Chris Meyers. Download it here for free:
 
-\i{A Gentle Introduction to Programming Using Python}. A freely-available
-four-week online course from MIT, patterned after \i{How to Think Like a
-  Computer Scientist}. The course homepage is at this shortened Web address:
-\url{http://bit.ly/2d9V62A}.
+\begin{center}
+  \url{http://www.greenteapress.com/thinkpython/thinkCSpy/thinkCSpy.pdf}
+\end{center}
 
-The website \href{https://stackoverflow.com/}{StackOverflow} probably already
-contains the answer to any Python question you might ever ask. Its section of
-Python-related questions may be found at
-\url{https://stackoverflow.com/questions/tagged/python}.
+Download it now and save it on your computer. Your homework is to \i{start
+  reading the textbook}. The end of this handout points you to a variety of
+other resources aimed at helping people learn to code using Python.
 
-Google has a Python class for ``people with a little bit of programming
-experience'' that may be found online here:
-\url{https://developers.google.com/edu/python/}. It includes video lectures
-and exercises.
-
-The \href{https://software-carpentry.org/}{Software Carpentry} project aims to
-teach programming to scientists who might not have a strong computing
-background. Their lessons are intended to be conducted live, but the materials
-are available online at
-\url{http://swcarpentry.github.io/python-novice-inflammation/}. That
-particular lesson is intended to take about five hours to finish. Please note
-that the lesson targets \i{version~3} of Python, while we are targeting
-version~2, which is similar but incompatible.
-
-Finally, if you go ahead and do a web search for ``how to learn Python,'' you
-will get an enormous list of resources. Many of them are from companies trying
-to make a few bucks off of the many people who want to learn how to code, and
-not all of their offerings will be brilliant. But there are surely some gems
-out there that we haven't listed above.
-
-
-% Haven't come up with a hands-on portion that seems worthwhile.
-%%%\newpage
-%%%\section{Foundations}
+One last thing: we do not have you create much code from scratch in this
+lesson, but feel free to experiment as you go. Students often come to us with
+a piece of code and ask, ``Will this work?'' To which we always reply, ``Just
+try running it and find out!'' \i{The worst that can happen is that it won't
+  work}. Which isn't so bad, is it? Python and Jupyter are great for
+experimentation --- take advantage of it!
 
 
 \newpage
 \section{Data structures}
 
 In this activity we will practice creating various kinds of Python data
-objects. Our exploration will be \i{very} superficial.
+objects and try to demonstrate how the ideas of \i{indirection} and
+\i{mutability} are important in computing.
 
-\subsection*{Foundational data types}
+\subsection*{Foundational data types; printing your data}
 
-The five foundational data types in Python are \i{the None type} (representing
-an empty or undefined value), \i{booleans} (true/false values), \i{integers},
-\i{floats} (approximations of real numbers), and \i{strings} (sequences of
-textual characters).
-
-Here are some examples of ways to assign variables to these different kinds of
-values. Please type all of these in.
+Assign some values of different types to some variables:
 
 \begin{lstlisting}
   a_none_variable = None
-  a_boolean = False
-  other_boolean = True
-  positive_int = 37
   negative_int = -100
-  positive_float = 1.75
-  one_million = 1e6
-  negative_pi = -3.14159
-  a_string = "Hello."
-  other_string = 'single quotes work too'
-  empty_string = ""
-  example_complex_string = '''\x46a\x6E\x63y\tth\x69n\x67s'''
+  one_million = 1e6 # "exponential" notation for floats: = 1 * 10**6
+  a_string = 'Using python'
 \end{lstlisting}
 
 \i{When using the Jupyter notebook}, if you just type in a variable's name in
@@ -161,271 +190,291 @@ variable:
   one_million
 \end{lstlisting}
 
+It is very important and valuable to examine your variables as you manipulate
+them. \i{When in doubt, print it out!} It never hurts.
+
 If you want to look at multiple variables, you have to put each one's name in
 a different cell:
 
 \begin{lstlisting}
-  example_complex_string
+  one_million # does not reappear
+  a_string
 \end{lstlisting}
 
-You can do math with these basic data types using about the notation that you
-would expect. Multiplication is expressed with a single asterisk.
-Exponentiation ($a^b$) is written with a double asterisk. You can ``add'' two
-string variables, which results in their \i{concatenation}: the first string
-followed by the second string.
+You can do math with numeric variables by typing in standard mathematical
+notation. Multiplication is expressed with a single asterisk (\s{*}).
+Exponentiation ($a^b$) is written with a double asterisk (\s{a**b}).
 
 \begin{lstlisting}
-  boolean_logic = a_boolean and (not other_boolean)
-  new_number = positive_int * negative_int
-  other_number = (positive_int / positive_float)**2
-  concatted_strs = 'Hello,' + ' world.'
+  new_number = one_million / negative_int
+  other_number = (new_number * 0.01) + 5**2
+  other_number
 \end{lstlisting}
 
-\subsection*{Core data structures}
+Lots of coders end up typing their math densely for some reason: \s{(5*i)+3}
+instead of \s{(5 * i) + 3}. This is ridiculous. Spaces make things easier to
+read! And they are free! Hit the spacebar liberally.
 
-Python has three basic data types for building data structures. They are
-generally referred to as \i{collections} because they contain, well,
-collections of other data.
+\subsection*{Lists}
 
-\i{Lists} are
-ordered sequences of other data. Lists can hold any kind of data.
+As presented in the mini-lecture, Python's \i{lists} are ordered sequences of
+other data. Lists can hold any kind of data.
 
 \begin{lstlisting}
-  a_list_of_ints = [1, 2, 5]
-  a_mixed_list = ['Hello', -3.14159, one_million, a_list_of_ints]
+  list_of_ints = [1, 2, 5]
+  mixed_list = ['Hello', one_million, list_of_ints]
+  mixed_list
 \end{lstlisting}
 
-You can access the \i{items} (also called \i{elements}) of a list by
-\i{indexing} with square brackets.
+Unlike the basic data types, lists are mutable --- you can modify their
+contents. We do this by \i{indexing} the list, using square brackets to
+identify a specific one of its \i{elements} (or \i{items}) that we care about,
+rather than the whole list at once:
+
+\begin{lstlisting}
+  list_of_ints[1] = 3
+  list_of_ints
+\end{lstlisting}
+
+There might be something surprising about what just got printed out. We now
+present you with one of the first mystical secrets of programming:
 
 \medskip
 \begin{center}
-  \fbox{\Large The first list index is zero, not one!}
+  \fbox{\Large The ``first'' element in a list has an index of zero, not one!}
 \end{center}
 \medskip
 
 Every single person who starts out programming has trouble getting used to
-this. Rest assured: there are very good reasons for this convention that will
-become clear over time.
+this. Rest assured: there are very good reasons for this convention $\ldots$
+but not so good that we think they'll be compelling just yet.
 
 \begin{lstlisting}
-  a_list_of_ints[0]
+  list_of_ints[0]
 \end{lstlisting}
 
 \begin{lstlisting}
-  a_list_of_ints[2]
+  list_of_ints[2]
 \end{lstlisting}
 
-Here are some terse examples hinting at what you can do with lists.
+\subsection*{Indirection; mutability}
 
-\begin{lstlisting}
-  length_of_my_list = len(a_list_of_ints)
-  a_list_of_ints.append(8)
-  print(len(a_list_of_ints))
-  print(a_list_of_ints[-1])
-  print(a_mixed_list + a_list_of_ints)
-\end{lstlisting}
+In the mini-lecture, we tried to emphasize that when you assign a variable,
+you are creating a name that lets you refer to some piece of data. The name
+and the data are not the same!
 
-Python's \i{sets} are like mathematical sets: unordered collections of
-objects, without duplication. Because of this latter constraint, you can only
-construct sets of certain kinds of data; mutable data structures are not
-allowed, because you could mutate them to break the constraint. Sets \i{can}
-combine different types of data, but tricky subtleties can arise.
-
-Because sets are unordered, you cannot index them. If you want to get a set's
-items back out, often it is helpful to convert it into a list with the
-\t{list()} function --- keeping in mind that \i{the list you get back will be
-  given to you in an unpredictable order}.
-
-\begin{lstlisting}
-  a_set = {1, 5, 10, 15}
-  other_set = {1, 1.74, 'hello'}
-  empty_set = set() # note: "{}" doesn't work
-  list_converted_to_set = set(a_list_of_ints)
-\end{lstlisting}
-
-Here are some things you can do with sets:
-
-\begin{lstlisting}
-  print(len(a_set))
-  print(len(empty_set))
-  print(1 in a_set)
-  print(17 in a_set)
-  print(17 not in a_set)
-  a_set.add(17)
-  print(17 not in a_set)
-  print(list(a_set))
-\end{lstlisting}
-
-Finally, \i{dictionaries} (usually shortened to \i{dicts}) are unordered
-collections of pairs of unique \i{keys} associated with possibly-non-unique
-\i{values}. Given a key, it is easy to fetch a value, but the opposite is not
-true. Relatedly, because dictionary keys must be unique, they have to follow
-the same constraints as set items. Dictionary values do not have this
-constraint.
-
-\begin{lstlisting}
-  a_dict = {'key1': 'value1', 'key2': 'value2'}
-  other_dict = {1: [1, 2, 3], -37: None}
-  dict_with_string_keys = dict(key1='value1', key2='value2')
-  empty_dict = {} # this syntax always gives you a dict, not a set
-\end{lstlisting}
-
-To look up a value in a dict, you index it, using the same typed syntax as you
-do for a list. You can use variable-assignment syntax to add new entries to
-dicts. You can use ``\s{del} syntax'' to remove entries.
-
-\begin{lstlisting}
-  print(a_dict['key1'])
-  print(len(a_dict))
-  a_dict['newkey'] = 'newvalue'
-  print(len(a_dict))
-  del a_dict['key1']
-  print(len(a_dict))
-  print(list(other_dict.keys()))
-  print(list(other_dict.values()))
-\end{lstlisting}
-
-The three basic structures provided by Python are \i{not} the only ones out
-there, and they are not necessarily ``fundamental'' in any deep sense. For
-instance, lists can be thought of as dicts where the keys are integers
-starting at zero. Likewise, sets can be thought of as dicts where the values
-are all \s{True}.
-
-\subsection*{Mutability in action}
-
-In the mini-lecture, we emphasized the importance of \i{mutability} and
-\i{ownership} when thinking about data. The basic data structures are mutable,
-so they can change from under you in surprising ways. Try hard to understand
-what happens when you run this small example:
+The following classic example demonstrates the point. Try hard to understand
+what's going on here.
 
 \begin{lstlisting}
   my_list = [1, 2, 3]
-  print(my_list)
-  other_list = my_list # "other_list" is a new name for the same data
-  other_list.append(37)
-  print(my_list)
+  print 'Before:', my_list
+  other_list = my_list
+  other_list[1] = 37
+  print 'After:', my_list
 \end{lstlisting}
 
-The foundational data types are all immutable, so they are not susceptible to
-these kinds of surprises.
+The ``before'' and ``after'' values of \s{my\_list} are different, even though
+it didn't \i{look} like you did anything to it! But while the variables
+\s{my\_list} and \s{other\_list} might have different names, they both refer
+to the same piece of data. So altering \s{other\_list} --- that is, the piece
+of data referenced by the variable \s{other\_list} --- alters \s{my\_list} as
+well.
 
-Python does, however, provide versions of its data structures that are
-immutable after creation. The immutable version of a list is called a
-\i{tuple}. It is usually written with parentheses. However, in many cases the
-parentheses are actually optional!
+Please note that \i{this kind of surprise can only happen because lists are
+  mutable.} This is one reason that mutable data should be handled carefully.
+If you share a mutable piece of data in two different pieces of code, it is
+all too easy to run into problems because an alteration in one piece wasn't
+intended to affect the other piece, but did anyway. In complex programs these
+problems can be \i{very} difficult to track down.
+
+\subsection*{Tuples}
+
+In fact, Python specifically provides immutable versions of some of its data
+structures. The immutable version of a list is called a \i{tuple}. They are
+written down like lists, but with parentheses instead of square brackets.
+However, in a surprising number of cases the parentheses are actually
+optional!
 
 \begin{lstlisting}
   a_tuple = (0, 3, 4)
-  equivalent_tuple = 0, 3, 4
-  other_tuple = (a_dict, 'hello', empty_set)
-  empty_tuple = ()
+  equivalent_tuple = 0, 3, 4 # this is fine; parens not actually needed
+  other_tuple = (a_tuple, 'hello', my_list)
+  other_tuple
 \end{lstlisting}
 
-In Python, the syntax \s{(x)} is interpreted as mathematical grouping. To
-create a tuple with one element, you must use a special syntax:
+You should sense that mutability must be important, if Python bothers to
+provide two data types that are essentially identical \i{except} for their
+mutability.
+
+It gets more complicated, though, because tuples themselves are like named
+variables: they only refer to their contents \i{indirectly}. So while you
+can't change a tuple, if that tuple happens to contain a mutable variable, the
+tuple can appear to change:
 
 \begin{lstlisting}
-  one_item_tuple = (True,)
+  print 'Before:', other_tuple
+  my_list[0] = -1234
+  print 'After:', other_tuple
 \end{lstlisting}
 
-Because of mutability, lists cannot be used as dictionary keys, but tuples can:
-
-\begin{lstlisting}
-  my_dict = {}
-  my_dict[(1,2,3)] = 'hello'
-  my_dict[1,2,4] = 'goodbye' # tuple parentheses can be omitted here
-  print(my_dict)
-  my_dict[[1,2,5]] = 'problem' # !!! raises TypeError
-\end{lstlisting}
-
-You can generally access and index tuples as you would lists. While you cannot
-modify tuples' contents directly, tuples \i{can} contain data structures that
-are themselves mutable:
-
-\begin{lstlisting}
-  print(other_tuple)
-  a_dict['morekey'] = 'edited'
-  print(other_tuple)
-\end{lstlisting}
-
-Because of this fact, tuples containing mutable data structures
-\i{cannot} be used as keys for dictionaries or sets.
-
-\begin{lstlisting}
-  my_dict[other_tuple] = 'problem' # !!! raises TypeError
-\end{lstlisting}
-
-The immutable version of a set is called a \s{frozenset}. There is no
-built-in syntax to create frozen sets. You must instead create them with the
-\s{frozenset()} function. This function takes one argument that is a
-collection, so be careful with parentheses.
-
-\begin{lstlisting}
-  frozen_from_list = frozenset([1, 2, 3])
-  some_tuple = (4, 5, 6)
-  frozen_from_tuple = frozenset(some_tuple)
-  frozen_from_equivalent_tuple = frozenset((4, 5, 6))
-  too_many_arguments = frozenset(4, 5, 6) # !!! raises TypeError
-\end{lstlisting}
-
-There is no built-in immutable version of a \s{dict}.
-
-\subsection*{Choosing the Right Data Structure}
-
-In realistic programs it is \i{exceedingly} important to choose the right data
-structure for your job. Fortunately, Python's foundational structures are very
-flexible and can gracefully handle all sorts of tasks. But there are more
-choices to be made than you might initially think.
-
-For example, say that your program works with radio measurements. Each
-measurement (\s{m}) is tagged with a time (\s{t}), a frequency (\s{f}), and a
-polarization (\s{p}). Here are some ways that you could store a collection of
-measurements:
-
-\begin{itemize}
-\item A list of tuples, each tuple of the form \s{(t, f, p, m)}. Each
-  polarization is encoded as a string: \s{"nn"}, \s{"ee"}, \s{"ne"}, or
-  \s{"en"}.
-\item The same as the above, except the polarizations are encoded as the
-  integers 0--3 instead of strings.
-\item A dict of lists, where the dict keys are the four polarizations
-  (\s{"nn"}, etc.), and the lists are made of tuples \s{(t, f, m)}.
-\item The same as the above, but the dict keys are the timestamps
-  (\s{t}), and the lists are made of tuples \s{(f, p, m)}.
-\item A tuple of four lists: one of all the timestamps, one of frequencies,
-  one of polarizations, and one of measurements.
-\item A dict of dicts of dicts of floats, where the outermost keys are times,
-  then frequencies, then polarizations, and the final values are the
-  measurements.
-\end{itemize}
-
-Which of these is the best? It depends on the characteristics of your data and
-what task you're trying to accomplish. When deciding how to represent your data in
-Python structures, think about these factors:
-
-\begin{enumerate}
-\item Which choice will help me write the simplest, clearest code?
-\item Which choice will result in the fastest program?
-\item Which choice will result in the most memory-efficient program?
-\end{enumerate}
-
-Generally, the first consideration is the most important and the last is the
-least important. When you're dealing with large data sets, however, you may
-have to trade off code complexity for efficiency.
-
-Very similar considerations apply when writing data to disk and reading them
-again. The file format that you use to save data also involves tradeoffs for
-speed, efficiency, convenience, and so on. It is \i{very common} to see people
-spend a lot of time wrestling with code that reads and writes data because the
-file format they are using is not well-matched to the problem they are trying
-to solve. If you're having trouble doing what you want with a data set, don't
-forget to ask yourself: \i{is the problem in the code, or in the data
-  structure}?
+You might be starting to see why indirection has caused headaches for so many
+programmers over the years!
 
 
 \newpage
 \section{Control Flow}
+
+In this activity we will practice using basic constructs for controlling
+program flow and think about ways to keep the flow clear.
+
+\subsection*{Basic control statements}
+
+In Python, and just about every language, \s{if} statements are pretty basic.
+Let's type one just so we can say that we did.
+
+\begin{lstlisting}
+  x = 7
+  if x > 3:
+      print 'x is bigger than three'
+  else:
+      print 'x is smaller than four'
+  print 'In particular, x =', x
+\end{lstlisting}
+
+Jupyter has a smart editor that tries to automatically manage the
+\i{indentation} of your code --- the white space at the beginning of each
+line. Its automatic indentation should be making your life easier when you
+type in the code we show here. If it isn't, please ask a helper for advice.
+Using an editor with proper automatic indentation is \i{enormously} important
+when coding in Python.
+
+Python's \s{for} loops operate on \i{collection} objects such as the lists and
+tuples that we have created.
+
+\begin{lstlisting}
+  for item in other_tuple:
+      print 'Item:', item
+\end{lstlisting}
+
+This should print out the three items in the \s{other\_tuple} variable. Note
+that the variable \s{item} remains defined \i{after} the \s{for} loop exits,
+keeping the value it had on the last iteration of the loop.
+
+\subsection*{Avoiding Rightward Drift}
+
+The control flow throughout a program should, ideally, be fairly
+straightforward, and one should be able to get a sense of it from skimming the
+code. The syntax of the Python language generally encourages this.
+
+A more common challenge is making clear not just the \i{what} of where the
+flow is going, but the \i{why}. Consider the following example:
+
+% NOTE! The text and content are tuned for the code listing to span a page
+% break! It won't make sense if we lose the fine positioning!
+
+\begin{lstlisting}
+  for item in other_tuple:
+      if x > 4 and len(item) == 2:
+          # Imagine that 100 lines of code go here
+          # and 100 more
+          x = 3
+          # and maybe 100 more
+          # and even some more!
+      else:
+          print 'Nothing to do.'
+\end{lstlisting}
+
+Pop quiz: without peeking at the previous page, can you remember under what
+conditions the \s{else} branch will be taken?
+
+This is the same problem that would occur if the imaginary hundreds of lines
+of code were actually present. By the time you read down to the \s{else}
+statement, you'll have forgotten what the \s{if} was testing! It is better to
+arrange your logic such that the first indented block is the short one:
+
+\begin{lstlisting}
+  for item in other_tuple:
+      if x < 5 or len(other_tuple) != 2:
+          print 'Nothing to do.'
+      else:
+          # Hundreds of lines of code go here.
+          x = 3
+\end{lstlisting}
+
+Even better, we can use other control flow tools to get rid of the \s{else}
+altogether:
+
+\begin{lstlisting}
+  for item in other_tuple:
+      if x < 5 or len(other_tuple) != 2:
+          print 'Nothing to do.'
+          continue
+
+      # Hundreds of lines of code go here.
+      x = 3
+\end{lstlisting}
+
+This doesn't reduce the number of lines of code, but it allows you to forget
+about the \s{if} statement as you read past the \s{continue} --- meaning you
+have fewer pieces of contextual information that you need to keep track of as
+you read.
+
+When writing complicated algorithms, loops and conditionals tend to nest
+repeatedly, leading to more indentation --- a phenomenon called \i{rightward
+  drift}. Each level of indentation is another piece of context you need to
+remember when reading a program: ``how did we get here?'' Sophisticated
+programmers structure their control flow to minimize rightward drift.
+
+\subsection*{Functions as control flow tools}
+
+Virtually every programming language lets you define \i{functions} that
+encapsulate bits of code that you can reuse in a structured way. Functions
+generally resemble mathematical functions in that they take \i{arguments} and
+return \i{results}.
+
+In Python you can define your own functions like this:
+
+\begin{lstlisting}
+  def hypoteneuse(opposite, adjacent):
+      return (opposite**2 + adjacent**2)**0.5
+\end{lstlisting}
+
+Here, the \s{return} statement tells the function to exit and yield the
+specified value. Let's check that our function makes sense:
+
+\begin{lstlisting}
+  hypoteneuse(3, 4)
+\end{lstlisting}
+
+The functions that we're used to from most branches of mathematics, however,
+don't have any kind of ``control flow'' as we've been discussing. For
+instance, there's no standard mathematical notation $G(a,b) = \ldots$ for a
+function $G$ that computes the greatest common divisor (GCD) of two integers.
+But in Python, we can write:
+
+\begin{lstlisting}
+  def G(a, b):
+      "Calculate the greatest common divisor of a and b."
+      while b:
+          a, b = b, a % b
+      return a
+\end{lstlisting}
+
+Here we have added a \i{docstring}: if the first ``statement'' of a function
+is a constant string value, it is ignored when running the code, but various
+tools --- including Jupyter --- will extract it as documentation for what the
+function does. \i{Write docstrings.}
+
+Let's test again:
+
+\begin{lstlisting}
+  a = 2 * 3 * 7 * 17 * 19
+  b = 2**3 * 7 * 11 * 13
+  print 'a =', a
+  print 'b =', b
+  G(a, b)
+\end{lstlisting}
 
 
 \newpage
@@ -612,4 +661,280 @@ when we display its value in the notebook, you get a fancy representation of
 the table contents.
 
 
+
+
+\newpage
+\section*{Other Resources}
+
+Many, many people have written many, many books aimed at beginning
+programmers. Many of them are about Python and will be absolutely relevant to
+you. Here are a few that you might want to check out.
+
+\i{How to Think Like a Computer Scientist: Learning with Python}, by Allen
+Downey, Jeffrey Elkner, and Chris Meyers. A 280-page textbook freely
+downloadable from:
+\url{http://www.greenteapress.com/thinkpython/thinkCSpy/thinkCSpy.pdf}. The
+book's Appendix~C contains its own list of recommended readings and resources.
+
+\i{A Gentle Introduction to Programming Using Python}. A freely-available
+four-week online course from MIT, patterned after \i{How to Think Like a
+  Computer Scientist}. The course homepage is at this shortened Web address:
+\url{http://bit.ly/2d9V62A}.
+
+The website \href{https://stackoverflow.com/}{StackOverflow} probably already
+contains the answer to any Python question you might ever ask. Its section of
+Python-related questions may be found at
+\url{https://stackoverflow.com/questions/tagged/python}.
+
+Google has a Python class for ``people with a little bit of programming
+experience'' that may be found online here:
+\url{https://developers.google.com/edu/python/}. It includes video lectures
+and exercises.
+
+The \href{https://software-carpentry.org/}{Software Carpentry} project aims to
+teach programming to scientists who might not have a strong computing
+background. Their lessons are intended to be conducted live, but the materials
+are available online at
+\url{http://swcarpentry.github.io/python-novice-inflammation/}. That
+particular lesson is intended to take about five hours to finish. Please note
+that the lesson targets \i{version~3} of Python, while we are targeting
+version~2, which is similar but incompatible.
+
+Finally, if you go ahead and do a web search for ``how to learn Python,'' you
+will get an enormous list of resources. Many of them are from companies trying
+to make a few bucks off of the many people who want to learn how to code, and
+not all of their offerings will be brilliant. But there are surely some gems
+out there that we haven't listed above.
+
+
 \end{document}
+
+
+% The boneyard %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{lstlisting}
+  print 'A:', len(list_of_ints)
+  a_list_of_ints.append(8)
+  print 'B:', list_of_ints
+\end{lstlisting}
+
+Here we are using the \s{print} statement to output the values of the various
+\i{expressions} that we've typed on those lines, so that we don't have to make
+lots of tiny little notebook cells to see what's happening. The ``A:'' markers
+help clarify which printed-out value corresponds to which expression.
+
+Above, \s{len()} is a function that returns the length of a list, and
+\s{.append()} is a function that adds an item to the end of a list --- namely,
+the list that appears to the left of the dot. Why does \s{append} use a dot,
+but not \s{len}? Why is \s{print} not a function like \s{len}? The honest
+answer: Python was designed in a kind of sloppy way!
+
+\subsection*{Sets}
+
+Python's \i{sets} are like mathematical sets: unordered collections of
+objects, without duplication. Sets can combine different types of data, but
+usually they should contain just one type.
+
+\begin{lstlisting}
+  a_set = {1, 5, 10, 15}
+  empty_set = set() # note: "{}" doesn't work
+  list_converted_to_set = set(a_list_of_ints)
+  print a_list_of_ints
+  print list_converted_to_set
+\end{lstlisting}
+
+Because sets are unordered, you cannot index them. If you want to get a set's
+items back out, often it is helpful to convert it into a list with the
+\t{list()} function --- keeping in mind that \i{the list you get back will be
+  given to you in an unpredictable order}.
+
+\begin{lstlisting}
+  a_set[0] # !!! raises TypeError
+\end{lstlisting}
+
+\begin{lstlisting}
+  print list(a_set) # does the output match the order you typed in before?
+\end{lstlisting}
+
+Here are some things you can do with sets:
+
+\begin{lstlisting}
+  print 'A:', len(empty_set)
+  print 'B:', (1 in a_set) # these parentheses are not stricly needed
+  print 'C:', (17 in a_set) # but hopefully they clarify what's happening
+  print 'D:', (17 not in a_set)
+  a_set.add(17)
+  print 'E:', (17 not in a_set)
+\end{lstlisting}
+
+Because of this latter constraint, you can only
+construct sets of certain kinds of data; mutable data are not allowed, because
+you could mutate them to break the constraint.
+
+\subsection*{Dictionaries}
+
+Finally, \i{dictionaries} (usually shortened to \i{dicts}) are unordered
+collections of pairs of unique \i{keys} associated with possibly-non-unique
+\i{values}. Given a key, it is easy to fetch a value, but the opposite is not
+true. Relatedly, because dictionary keys must be unique, they have to follow
+the same constraints as set items. Dictionary values do not have this
+constraint.
+
+\begin{lstlisting}
+  a_dict = {'key1': 'value1', 'key2': 'value2'}
+  other_dict = {1: [1, 2, 3], -37: None}
+  dict_with_string_keys = dict(key1='value1', key2='value2')
+  empty_dict = {} # this syntax always gives you a dict, not a set
+\end{lstlisting}
+
+To look up a value in a dict, you index it, using the same typed syntax as you
+do for a list. You can use variable-assignment syntax to add new entries to
+dicts. You can use ``\s{del} syntax'' to remove entries.
+
+\begin{lstlisting}
+  print(a_dict['key1'])
+  print(len(a_dict))
+  a_dict['newkey'] = 'newvalue'
+  print(len(a_dict))
+  del a_dict['key1']
+  print(len(a_dict))
+  print(list(other_dict.keys()))
+  print(list(other_dict.values()))
+\end{lstlisting}
+
+The three basic structures provided by Python are \i{not} the only ones out
+there, and they are not necessarily ``fundamental'' in any deep sense. For
+instance, lists can be thought of as dicts where the keys are integers
+starting at zero. Likewise, sets can be thought of as dicts where the values
+are all \s{True}.
+
+\subsection*{Mutability in action}
+
+In the mini-lecture, we emphasized the importance of \i{mutability} and
+\i{ownership} when thinking about data. The basic data structures are mutable,
+so they can change from under you in surprising ways. Try hard to understand
+what happens when you run this small example:
+
+\begin{lstlisting}
+  my_list = [1, 2, 3]
+  print(my_list)
+  other_list = my_list # "other_list" is a new name for the same data
+  other_list.append(37)
+  print(my_list)
+\end{lstlisting}
+
+The foundational data types are all immutable, so they are not susceptible to
+these kinds of surprises.
+
+Python does, however, provide versions of its data structures that are
+immutable after creation. The immutable version of a list is called a
+\i{tuple}. It is usually written with parentheses. However, in many cases the
+parentheses are actually optional!
+
+\begin{lstlisting}
+  a_tuple = (0, 3, 4)
+  equivalent_tuple = 0, 3, 4
+  other_tuple = (a_dict, 'hello', empty_set)
+  empty_tuple = ()
+\end{lstlisting}
+
+In Python, the syntax \s{(x)} is interpreted as mathematical grouping. To
+create a tuple with one element, you must use a special syntax:
+
+\begin{lstlisting}
+  one_item_tuple = (True,)
+\end{lstlisting}
+
+Because of mutability, lists cannot be used as dictionary keys, but tuples can:
+
+\begin{lstlisting}
+  my_dict = {}
+  my_dict[(1,2,3)] = 'hello'
+  my_dict[1,2,4] = 'goodbye' # tuple parentheses can be omitted here
+  print(my_dict)
+  my_dict[[1,2,5]] = 'problem' # !!! raises TypeError
+\end{lstlisting}
+
+You can generally access and index tuples as you would lists. While you cannot
+modify tuples' contents directly, tuples \i{can} contain data structures that
+are themselves mutable:
+
+\begin{lstlisting}
+  print(other_tuple)
+  a_dict['morekey'] = 'edited'
+  print(other_tuple)
+\end{lstlisting}
+
+Because of this fact, tuples containing mutable data structures
+\i{cannot} be used as keys for dictionaries or sets.
+
+\begin{lstlisting}
+  my_dict[other_tuple] = 'problem' # !!! raises TypeError
+\end{lstlisting}
+
+The immutable version of a set is called a \s{frozenset}. There is no
+built-in syntax to create frozen sets. You must instead create them with the
+\s{frozenset()} function. This function takes one argument that is a
+collection, so be careful with parentheses.
+
+\begin{lstlisting}
+  frozen_from_list = frozenset([1, 2, 3])
+  some_tuple = (4, 5, 6)
+  frozen_from_tuple = frozenset(some_tuple)
+  frozen_from_equivalent_tuple = frozenset((4, 5, 6))
+  too_many_arguments = frozenset(4, 5, 6) # !!! raises TypeError
+\end{lstlisting}
+
+There is no built-in immutable version of a \s{dict}.
+
+\subsection*{Choosing the Right Data Structure}
+
+In realistic programs it is \i{exceedingly} important to choose the right data
+structure for your job. Fortunately, Python's foundational structures are very
+flexible and can gracefully handle all sorts of tasks. But there are more
+choices to be made than you might initially think.
+
+For example, say that your program works with radio measurements. Each
+measurement (\s{m}) is tagged with a time (\s{t}), a frequency (\s{f}), and a
+polarization (\s{p}). Here are some ways that you could store a collection of
+measurements:
+
+\begin{itemize}
+\item A list of tuples, each tuple of the form \s{(t, f, p, m)}. Each
+  polarization is encoded as a string: \s{"nn"}, \s{"ee"}, \s{"ne"}, or
+  \s{"en"}.
+\item The same as the above, except the polarizations are encoded as the
+  integers 0--3 instead of strings.
+\item A dict of lists, where the dict keys are the four polarizations
+  (\s{"nn"}, etc.), and the lists are made of tuples \s{(t, f, m)}.
+\item The same as the above, but the dict keys are the timestamps
+  (\s{t}), and the lists are made of tuples \s{(f, p, m)}.
+\item A tuple of four lists: one of all the timestamps, one of frequencies,
+  one of polarizations, and one of measurements.
+\item A dict of dicts of dicts of floats, where the outermost keys are times,
+  then frequencies, then polarizations, and the final values are the
+  measurements.
+\end{itemize}
+
+Which of these is the best? It depends on the characteristics of your data and
+what task you're trying to accomplish. When deciding how to represent your data in
+Python structures, think about these factors:
+
+\begin{enumerate}
+\item Which choice will help me write the simplest, clearest code?
+\item Which choice will result in the fastest program?
+\item Which choice will result in the most memory-efficient program?
+\end{enumerate}
+
+Generally, the first consideration is the most important and the last is the
+least important. When you're dealing with large data sets, however, you may
+have to trade off code complexity for efficiency.
+
+Very similar considerations apply when writing data to disk and reading them
+again. The file format that you use to save data also involves tradeoffs for
+speed, efficiency, convenience, and so on. It is \i{very common} to see people
+spend a lot of time wrestling with code that reads and writes data because the
+file format they are using is not well-matched to the problem they are trying
+to solve. If you're having trouble doing what you want with a data set, don't
+forget to ask yourself: \i{is the problem in the code, or in the data
+  structure}?
