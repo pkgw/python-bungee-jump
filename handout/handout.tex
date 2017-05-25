@@ -325,41 +325,79 @@ programmers over the years!
 \newpage
 \section{Control Flow}
 
-In this activity we will practice using basic constructs for controlling
+\def\typeit{$\pmb\mapsto$\space}
+
+In this activity we will explore some of Python's constructs for controlling
 program flow and think about ways to keep the flow clear.
 
-\subsection*{Basic control statements}
+To demonstrate these concepts, we are going to step away from Jupyter and
+instead use an interactive debugger called PuDB. Below, sentences beginning
+with \fbox{\typeit} are ones that tell you what to type.
 
-In Python, and just about every language, \s{if} statements are pretty basic.
-Let's type one just so we can say that we did.
+\subsection*{Conditionals}
 
-\begin{lstlisting}
-  x = 7
-  if x > 3:
-      print 'x is bigger than three'
-  else:
-      print 'x is smaller than four'
-  print 'In particular, x =', x
-\end{lstlisting}
+Start by opening a new terminal window. \typeit Run the command \s{pudb SCRIPT.py}.
+\underline{TODO finalize invocation!}
 
-Jupyter has a smart editor that tries to automatically manage the
-\i{indentation} of your code --- the white space at the beginning of each
-line. Its automatic indentation should be making your life easier when you
-type in the code we show here. If it isn't, please ask a helper for advice.
-Using an editor with proper automatic indentation is \i{enormously} important
-when coding in Python.
+PuDB uses a semi-graphical interface in your terminal. It's not intuitive to
+use, but we'll try to walk you through it carefully. Avoid hitting extraneous
+keys, though, since you might put PuDB in a mode where our pre-written
+instructions stop working.
 
-Python's \s{for} loops operate on \i{collection} objects such as the lists and
-tuples that we have created.
+When you launch it, PuDB will open a welcome message. You don't need to read
+it. \typeit Hit \s{Enter} to make it go away.
 
-\begin{lstlisting}
-  for item in other_tuple:
-      print 'Item:', item
-\end{lstlisting}
+You will then get a window showing preferences you can change. The defaults
+are fine. \typeit Hit the right arrow key to highlight the \s{OK} box, then
+\s{Enter} to close the window.
 
-This should print out the three items in the \s{other\_tuple} variable. Note
-that the variable \s{item} remains defined \i{after} the \s{for} loop exits,
-keeping the value it had on the last iteration of the loop.
+PuDB will now show you a screen with a lot of sections that are mostly empty.
+It has loaded up our demo script and paused it on the first line. \typeit Hit
+the \s{n} key to run the program one step, so that it advances to the
+\underline{n}ext line.
+
+You'll see that in the ``Variables'' display, in the top-right of your screen,
+a line saying \fbox{\s{x: 0}} has appeared, because our program just assigned
+the variable \s{x} the value 0. In the main window, the indicator has advanced
+to the next non-blank line, an \s{if} statement, showing us where the program
+is paused.
+
+Take a moment to guess how control will flow over the next few lines. \typeit
+Once you've done so, hit the \s{n} key a few more times \i{until you get to
+  the line labeled ``pause point~A.''} Stop there. Were you right?
+
+We'll now restart the program, without bothering to let it finish. \typeit Do
+this by hitting the \s{q} key to open the ``Finished'' window, then hitting
+\s{Enter}.
+
+\typeit Hit the \s{n} key once to advance to the \s{if} statement once again.
+\typeit Now, type \s{Control-x}. The screen will recolor, showing that now the
+``Command line'' section in the lower-left part of the screen is active.
+
+\typeit Type \s{x = 7} in the command line, then hit \s{Enter}. \typeit Then
+hit \s{Control-x} again, which returns the ``focus'' of the program to the
+main program listing. \typeit Finally, hit \s{n} to advance to the next line.
+In the ``Variables'' display, you should see that \s{x} has changed to 7 ---
+we were able to monkey with it interactively, while our program was running!
+Fun! \typeit Hit \s{n} again to get to pause point~A.
+
+\subsection*{Loops}
+
+We'll now navigate through a few loops to help you get a feel for them. The
+first \i{stanza} of code, going up until ``pause point~B'', calculates the
+greatest common denominator (GCD) of two numbers --- although you might have
+to trust us on this point. The expression \s{a \%\ b} computes the remainder
+of $a$ divided by $b$.
+
+\typeit Hit \s{n} and watch the variables change until you reach ``pause
+point~B.'' The \s{while} loop doesn't have any complicated internal structure,
+so the control flow is pretty simple here.
+
+The next stanza has an admittedly nonsensical \s{for} loop that invokes the
+\s{break} and \s{continue} statements. \typeit Hit \s{n} to step through the
+loop. At the beginning of each iteration, consider the values of the variables
+\s{z} and \s{k} and predict how the program's control flow will progress.
+\typeit Proceed with \s{n} until you reach ``pause point~C.''
 
 \subsection*{Avoiding Rightward Drift}
 
@@ -367,159 +405,46 @@ The control flow throughout a program should, ideally, be fairly
 straightforward, and one should be able to get a sense of it from skimming the
 code. The syntax of the Python language generally encourages this.
 
-A more common challenge is making clear not just the \i{what} of where the
-flow is going, but the \i{why}. Consider the following example:
+However, when you're writing code for not-so-simple computations, it is easy
+for the control flow to get hard to follow. For instance, consider the next
+stanza of code in our demonstration file. Given a span of time measured in
+seconds, it converts it into an English string describing that span of time,
+ranging from ``seconds'' all the way to ``years.''
 
-% NOTE! The text and content are tuned for the code listing to span a page
-% break! It won't make sense if we lose the fine positioning!
+To give you a chance to experiment with how the code works, we've implemented
+this conversion in a loop. Each iteration, the code considers the variable
+\s{seconds} and places the English description of the time span in the
+variable \s{msg}.
 
-\begin{lstlisting}
-  for item in other_tuple:
-      if x > 4 and len(item) == 2:
-          # Imagine that 100 lines of code go here
-          # and 100 more
-          x = 3
-          # and maybe 100 more
-          # and even some more!
-      else:
-          print 'Nothing to do.'
-\end{lstlisting}
+\typeit Press \s{n} to step through one full iteration of the loop. You'll see
+the control flow jump around as the necessary numbers are computed.
 
-Pop quiz: without peeking at the previous page, can you remember under what
-conditions the \s{else} branch will be taken?
+We think that you'll agree that the logic in this code is hard to follow at a
+glance --- the \s{else} statements are widely separated from the \s{if}
+statements, and the indentation gets deeply nested. Each level of indentation
+brings with it a piece of context that you have to remember when reading the
+code, which makes it confusing. In real programs, logic is often \i{not}
+simple, and it's easy to get this kind of deep nesting --- a phenomenon called
+\i{rightward drift}.
 
-This is the same problem that would occur if the imaginary hundreds of lines
-of code were actually present. By the time you read down to the \s{else}
-statement, you'll have forgotten what the \s{if} was testing! It is better to
-arrange your logic such that the first indented block is the short one:
+\typeit At the top of the loop, you can use \s{Control-x} to change the value
+of the \s{seconds} variable to try out different settings, using \s{n} to step
+through the code. When you've seen enough, use \s{Control-x} to change the
+value of \s{keep\_going} to \s{False}. \i{The loop won't exit until you do
+  this!} Move ahead to pause point~D.
 
-\begin{lstlisting}
-  for item in other_tuple:
-      if x < 5 or len(item) != 2:
-          print 'Nothing to do.'
-      else:
-          # Hundreds of lines of code go here.
-          x = 3
-\end{lstlisting}
+In the next stanza of code, we implement the same logic. But this time, we use
+\s{continue} statements to avoid rightward drift. While the two pieces of code
+have identical functionality, we believe that this version is \i{much} easier
+to read.
 
-Even better, we can use other control flow tools to get rid of the \s{else}
-altogether:
+\typeit Step through the loop a few more times, using \s{Control-x} to try out
+different values of \s{seconds} and eventually exiting by setting
+\s{keep\_going} to \s{False}. When you're all done, type \s{q} \i{twice} to
+exit PuDB.
 
-\begin{lstlisting}
-  for item in other_tuple:
-      if x < 5 or len(item) != 2:
-          print 'Nothing to do.'
-          continue
-
-      # Hundreds of lines of code go here.
-      x = 3
-\end{lstlisting}
-
-This doesn't reduce the number of lines of code, but it allows you to forget
-about the \s{if} statement as you read past the \s{continue} --- meaning you
-have fewer pieces of contextual information that you need to keep track of as
-you read.
-
-When writing complicated algorithms, loops and conditionals tend to nest
-repeatedly, leading to more indentation --- a phenomenon called \i{rightward
-  drift}. Each level of indentation is another piece of context you need to
-remember when reading a program: ``how did we get here?'' Sophisticated
-programmers structure their control flow to minimize rightward drift.
-
-\subsection*{Functions as control flow tools}
-
-Virtually every programming language lets you define \i{functions} that
-encapsulate bits of code that you can reuse in a structured way. Functions
-generally resemble mathematical functions in that they take \i{arguments} and
-return \i{results}.
-
-In Python you can define your own functions like this:
-
-\begin{lstlisting}
-  def hypoteneuse(opposite, adjacent):
-      return (opposite**2 + adjacent**2)**0.5
-\end{lstlisting}
-
-Here, the \s{def} line declares the name of the function and its arguments,
-and the \s{return} statement tells the function to exit and yield the
-specified value. Let's check that our function makes sense:
-
-\begin{lstlisting}
-  hypoteneuse(3, 4)
-\end{lstlisting}
-
-The functions that we're used to from most branches of mathematics, however,
-don't have any kind of ``control flow'' as we've been discussing. For
-instance, there's no standard ``closed-form expression'' $G(a,b) = \ldots$ for
-a function $G$ that computes the greatest common divisor (GCD) of two
-integers. But in Python, we can write:
-
-\begin{lstlisting}
-  def G(a, b):
-      "Return the greatest common divisor of integers a and b."
-      while b:
-          (a, b) = (b, a % b) # this is a tricky line!
-      return a
-\end{lstlisting}
-
-Here we have added a \i{docstring}: if the first ``statement'' of a function
-is a constant string value, it is ignored when running the code, but various
-tools --- including Jupyter --- will extract it as documentation for what the
-function does. \i{Write docstrings.}
-
-Let's test again:
-
-\begin{lstlisting}
-  a = 2 * 3 * 7 * 17 * 19
-  b = 2**3 * 7 * 11 * 13
-  print 'a =', a
-  print 'b =', b
-  G(a, b)
-\end{lstlisting}
-
-You can put a \s{return} statement anywhere in a function you want. One way to
-think about functions, then, is that they are powerful tools for developing a
-clear and concise control flow. For instance, say we have a function that
-describes a variable:
-
-\begin{lstlisting}
-  def describe(v):
-      result = None
-      if v is None:
-          result = 'it is None'
-      elif isinstance(v, int): # is v an "instance" of the integer type?
-          if v < 0:
-              result = 'it is a negative integer'
-          else:
-              result = 'it is a nonnegative integer'
-      else:
-          result = 'it is neither None nor an integer'
-      return result
-
-  print describe(None)
-  print describe(0)
-\end{lstlisting}
-
-By using \s{return} statements judiciously, we can ``pick off'' cases
-one-by-one and significantly clarify things:
-
-\begin{lstlisting}
-  def describe(v):
-      if v is None:
-          return 'it is None'
-
-      if not isinstance(v, int):
-          return 'it is neither None nor an integer'
-
-      if v < 0:
-          return 'it is a negative integer'
-
-      return 'it is a nonnegative integer'
-
-  print describe(-1)
-\end{lstlisting}
-
-\i{If you have extra time:} what happens when you \s{describe(-1.0)}? Why?
+Sophisticated programmers use statements like \s{continue} to keep their
+control flow tidy and avoid rightward drift.
 
 
 \newpage
