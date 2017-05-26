@@ -450,8 +450,8 @@ control flow tidy and avoid rightward drift.
 \newpage
 \section{Input and Output (``IO'')}
 
-We will now try out some basic IO in Python and explore the importance of your
-data format choices.
+We will now try out some basic IO in Python and explore the ``streaming''
+model for data sets.
 
 For this hands-on activity, return to your Jupyter notebook.
 
@@ -464,11 +464,10 @@ you're writing a command-line program, to your terminal.
 Here's an \i{important disclaimer:} in Python~3, \s{print()} is a function,
 not a special statement. This is a much, much better way to do things, but it
 is not compatible with Python~2, and this fact makes it very annoying to port
-code from version~2 to version~3. You \i{should} learn about the
-``\s{print\_function}'' ``\s{\_\_future\_\_} import,'' which lets you use the
-\s{print()} function in Python~2 code, and use it everywhere you can. For
-annoying technical reasons, that's not a good solution for today, so we stick
-with the old-fashioned statement form of \s{print}.
+code from version~2 to version~3. \i{\underline{TODO}: a good tutorial on the
+  print\_function future import!}. For annoying technical reasons, that's not
+a good solution for today, so we stick with the old-fashioned statement form
+of \s{print}.
 
 The \s{print} statement is usually very straightforward:
 
@@ -489,8 +488,8 @@ variables at once. Here's our recommended pattern for doing so:
 \end{lstlisting}
 
 This approach doesn't require you to type that many quotes or parentheses. It
-is tempting to just write statements like \s{print x, y, z}, but take it from
-us: printing numbers without hints as to their context gets confusing quickly.
+is tempting to just write statements like \s{print x, y, z}, but trust us:
+printing numbers without hints as to their context gets confusing quickly.
 
 \subsection*{IO with files}
 
@@ -593,7 +592,6 @@ connected to the internet and fetched a file. While we didn't see any
 reassuring output, fear not: if no error message popped up, your download
 succeeded!
 
-
 \subsection*{High-Level IO}
 
 The \s{print} statement is useful but it is not a good solution for anything
@@ -616,45 +614,116 @@ these files into customized table data objects.
 
 Here, the AstroPy table object has special integration with Jupyter so that
 when we display its value in the notebook, you get a fancy representation of
-the table contents.
+the table contents. Pretty fancy results for just 10 lines of code!
 
-\subsection*{The importance of format choice}
+\subsection*{Streaming}
 
-Most scientists don't appreciate just how important it is to choose a data
-format carefully.
+When doing IO with data sets, it is good to try to deal with them in a
+\i{streaming} fashion when possible. That is, to process data as you work
+through a file, rather than reading in the whole file at once. Streaming is
+more efficient and flexible, and often just as easy to implement.
 
-Most also don't appreciate how many choices there are to be made. There's the
-choice of internal data structures to be used by a running program; the
-storage format for individual data files; and there's how collections of data
-files are organized and managed. We'll demonstrate the sort of problem that
-can arise when you're dealing with collections of data files.
-
-Imagine that we have a survey full of images and we want to extract some
-statistics from each image and compile them into a table. Here we define a
-custom Python function that pretends to do this; we don't have any images so
-we just record what we \i{would} do if the code were real, writing one line
-for each processed image:
+For instance, to loop through the lines in a text file, some people will write
+code like this:
 
 \begin{lstlisting}
-  def extract_stats(job_id, img_num, dest):
-      print >>dest, 'Processing job', job_id, 'looked at image', img_num
+  f = open('mydata.txt') # if you don't specify the mode, it defaults to 'r'
+  data = f.read()
+  lines = data.splitlines()
+  f.close()
+
+  for line in lines:
+      print 'A line from the file:', line
 \end{lstlisting}
 
-To speed things up, we might run four processors in parallel. This chunk of
-code goes ahead and does just that:
+But you can use a file object in a \s{for} loop to stream the lines as they're
+read from the file:
 
 \begin{lstlisting}
-  def process_group(job_id):
-      dest = open('results.txt', 'a', 0) # 'a'ppend to file
-      for img_num in range(job_id, 20, 4):
-          extract_stats(job_id, img_num, dest)
-      dest.close()
+  f = open('mydata.txt')
 
-  import multiprocessing
-  multiprocessing.Pool(4).map(process_group, [0, 1, 2, 3])        
+  for line in f:
+      print 'A line from the file:', line.rstrip()
+
+  f.close()
 \end{lstlisting}
 
+Note that string data, like file objects, have methods attached --
+\s{rstrip()} in this case. This method returns a string that has had the
+newline code (\s{`\textbackslash n'} from before) removed, which is needed for
+this style of reading lines from a file.
 
+Now, to be honest: modern machines have so much memory that it is almost
+always fine to read in whole files at once. But if your file is a terabyte
+large, or your ``file'' is a \i{never-ending} stream of data, streaming is an
+important technique.
+
+You can do some surprisingly sophisticated computations in the streaming
+paradigm. As a relatively simple example, let's say that we want to compute
+the mean ($\langle M\rangle$) and variance ($\sigma^2_M$) of the
+``Mass'' column of the data table we read in, which is a catalog of stars.
+If there are $N$ masses labeled $M_i$, these are defined as:
+\[
+\langle M\rangle = \frac{1}{N} \sum_{i = 1}^N M_i
+\]
+and
+\[
+\sigma^2_M = \frac{1}{N} \sum_{i = 1}^N (M_i - \langle M\rangle)^2,
+\]
+which can be implemented in Python thusly:
+
+\begin{lstlisting}
+  mass_col = table['Mass']
+  mass_col = mass_col[~mass_col.mask] # drop rows without mass data
+  x = 0.
+
+  for i in range(len(mass_col)):
+      x += mass_col[i] # same as: "x = x + mass_col[i]"
+
+  mean_mass = x / len(mass_col)
+
+  x = 0.
+
+  for i in range(len(mass_col)):
+      x += (mass_col[i] - mean_mass)**2
+
+  mass_var = x / len(mass_col)
+  mean_mass, mass_var
+\end{lstlisting}
+
+But you may recall this statistical identity:
+\[
+\sigma^2_M = \langle M^2\rangle - \langle M\rangle^2,
+\]
+which makes it possible to do the same computation like so:
+
+\begin{lstlisting}
+  m_sum = 0.
+  m_sq_sum = 0.
+  n = 0
+
+  for mass in mass_col:
+      m_sum += mass
+      m_sq_sum += mass**2
+      n += 1
+
+  mean_mass = m_sum / n
+  mass_var = m_sq_sum / n - mean_mass**2
+  mean_mass, mass_var
+\end{lstlisting}
+
+Now in this particular example, the full table of data has been loaded into
+memory, so we're not actually gaining anything. But our second, ``streaming''
+approach \i{could} work with arbitrarily large tables, or ones whose size you
+don't know in advance, while the first approach cannot.
+
+We should also mention that the first example shows a coding style that you
+should almost always avoid in Python: when working with lists of numbers, you
+should use ``vectorized'' routines provided by the ``Numpy'' module. We're
+tell you \i{much} more about this in the next session. However, while Numpy
+gives much better tools for calculating the mean and variance of a vector of
+data, it doesn't change the fundamental character of the approach, namely that
+it requires the full vector to be stored in memory.
 
 
 \newpage
