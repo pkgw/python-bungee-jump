@@ -166,7 +166,7 @@
           <pre>a = ['list', 'of', 'words']
 b = a
 b[1] = 'new'
-print(a[1])</pre>
+print a[1]</pre>
 
           <p>This tricky <i>indirection</i> concept comes up over and over in
             computing.</p>
@@ -195,8 +195,9 @@ print(a[1])</pre>
 
           <p>Our first examples ran commands strictly in sequence.</p>
 
-          <p>Real programs have to make choices or run loops. The geometry of
-            these <i>branches</i> define its <i>control flow</i>.</p>
+          <p>Most real programs have to make choices or run loops. The
+            geometry of these <i>branches</i> define its <i>control
+            flow</i>.</p>
 
           <p>Python provides a very standard set of statements for managing
             control flow.</p>
@@ -210,8 +211,8 @@ print(a[1])</pre>
 
           <pre><b>if</b> x &gt; 4:
     x = 4
-    print('Capped x.')
-print(x)</pre>
+    print 'Capped x.'
+print x</pre>
 
           <p>Python groups statements into <i>blocks</i> by looking at their
             indentation!!! Most languages don’t.</p>
@@ -242,7 +243,7 @@ print(x)</pre>
 <b>while</b> n_iterations &lt; 10:
     do_some_stuff()
     n_iterations += 1
-print('Finished iterating.')</pre>
+print 'Finished iterating.'</pre>
         </section>
 
         <section>
@@ -254,13 +255,13 @@ print('Finished iterating.')</pre>
 <b>while</b> True:
     x = get_next_x()
     <b>if</b> x &lt; 0:
-        print('Quitting')
+        print 'Quitting'
         <b>break</b>
     <b>if</b> x &gt; 9:
-        print('Ignoring')
+        print 'Ignoring'
         <b>continue</b>
     total += x
-print(total)</pre>
+print total</pre>
         </section>
 
         <section>
@@ -271,15 +272,15 @@ print(total)</pre>
           <pre>a_list = [1, 1, 2, 3, 5]
 
 <b>for</b> x <b>in</b> a_list:
-    print(x)
+    print x
 
 a_dict = {'key1': 8, 'key2': 13}
 
 <b>for</b> k <b>in</b> a_dict.keys():
-    print(k)
+    print k
 
 <b>for</b> k_and_v <b>in</b> a_dict.items():
-    print(k_and_v)</pre>
+    print k_and_v</pre>
         </section>
 
 
@@ -353,7 +354,11 @@ a_dict = {'key1': 8, 'key2': 13}
 
 
         <section>
-          <h1 class="titlecard">5. Managing Complexity: Modules</h1>
+          <h1 class="titlecard">5. Managing Complexity: Functions &amp; Modules</h1>
+        </section>
+
+        <section>
+          <h2></h2>
         </section>
 
 
