@@ -147,9 +147,8 @@
             <li>Lists</li>
             <li>Sets</li>
             <li>Dictionaries (“dicts”)</li>
+            <li><i>Objects</i>, to be explored later</li>
           </ul>
-
-          <p class="mt1">And <i>objects</i>, to be explored later.</p>
         </section>
 
         <section>
@@ -168,8 +167,7 @@ b = a
 b[1] = 'new'
 print a[1]</pre>
 
-          <p>This tricky <i>indirection</i> concept comes up over and over in
-            computing.</p>
+          <p><i>Indirection</i> is tricky and comes up <i>all over</i>.</p>
         </section>
 
         <section>
@@ -277,10 +275,7 @@ print total</pre>
 a_dict = {'key1': 8, 'key2': 13}
 
 <b>for</b> k <b>in</b> a_dict.keys():
-    print k
-
-<b>for</b> k_and_v <b>in</b> a_dict.items():
-    print k_and_v</pre>
+    print k</pre>
         </section>
 
 
@@ -342,7 +337,7 @@ a_dict = {'key1': 8, 'key2': 13}
         <section>
           <h2>Python has many ways to do IO.</h2>
 
-          <p>Special objects — <i>file-like objects</i> — represent byte
+          <p>Special data — <i>file-like objects</i> — represent byte
             streams.</p>
 
           <p>Simplest way to do output: <tt>print</tt> statement
@@ -358,7 +353,98 @@ a_dict = {'key1': 8, 'key2': 13}
         </section>
 
         <section>
-          <h2></h2>
+          <h2>Managing complexity is hard.</h2>
+
+          <p>Modern programming languages don’t just give you tools to perform
+            computations and IO.</p>
+
+          <p>They spend just as much effort to give you tools to manage the
+            complexity of large programs.</p>
+
+          <p>The name of the game is breaking a big task into
+            smaller, <i>composable</i> pieces.</p>
+
+          <p>Much of “learning how to code” is learning how to divide problems
+            into solvable sub-problems.</p>
+        </section>
+
+        <section>
+          <h2>Functions help manage complexity.</h2>
+
+          <pre><b>def</b> factorial(n):
+    <b>if</b> n == 0: # ← equality test
+        <b>return</b> 1
+    <b>return</b> n * factorial(n - 1)
+
+<b>print</b> factorial(5)</pre>
+
+          <p>Functions are tools for:</p>
+
+          <ol>
+            <li><i>Encapsulation</i></li>
+            <li>Preventing <i>code duplication</i></li>
+            <li>Control flow management</li>
+          </ol>
+
+        </section>
+
+        <section>
+          <h2>Functions are variables too.</h2>
+
+          <p>We lied: code is data.</p>
+
+          <pre><b>def</b> make_a_multiplier(k):
+    <b>def</b> multiply_by_k(x):
+        <b>return</b> k * x
+    <b>return</b> multiply_by_k
+
+multiply_by_5 = make_a_multiplier(5)
+<b>print</b> multiply_by_5(3)</pre>
+        </section>
+
+        <section>
+          <h2>Organize Python code with <i>modules</i>.</h2>
+
+          <p>Modules encapsulate related code and data.</p>
+
+          <p>A module is a single file of Python code.</p>
+
+          <p>When you <i>import</i> a module, the code is run and the
+            resulting variables are made available to you.</p>
+
+          <p>You can’t import two “different versions” of the same module.</p>
+        </section>
+
+        <section>
+          <h2>Modules are also variables.</h2>
+
+          <p>Their contents are once again accessed with “dot notation”.</p>
+
+          <pre><b>import</b> sys
+<b>print</b> sys.path
+also_sys = sys
+
+<b>import</b> os.path
+<b>import</b> numpy <b>as</b> np
+<b>from</b> astropy.io <b>import</b> ascii, fits</pre>
+        </section>
+
+        <section>
+          <h2>Modules are for code <i>distribution</i> too.</h2>
+
+          <p>Virtually all modern software relies on <i>library</i> code.</p>
+
+          <p>Virtually all modern languages consist of a <i>core</i> plus
+            a <i>standard library</i>.</p>
+
+          <p>Python libraries are distributed as <i>packages</i> providing one
+            or more modules.</p>
+
+          <p>Python’s package ecosystem is ungainly, but there’s a package for
+            everything.</p>
+
+          <p>The <i>pip</i> and <i>conda</i> tools are similar but different.
+            It is important to learn how to use them.</p>
         </section>
 
 

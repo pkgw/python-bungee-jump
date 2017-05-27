@@ -129,7 +129,7 @@ body {
   text-align: left;
   margin-top: 0.2em;
   margin-bottom: 1em;
-  line-height: 1em;
+  line-height: 1.1em;
 }
 
 .reveal blockquote {
@@ -190,6 +190,7 @@ body {
 .reveal pre {
   font-family: monospace;
   text-align: left;
+  line-height: 1.2em;
   width: 80%;
   margin: 0.2em auto 1em auto;
 }
