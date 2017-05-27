@@ -336,8 +336,10 @@ with \fbox{\typeit} are ones that tell you what to type.
 
 \subsection*{Conditionals}
 
-Start by opening a new terminal window. \typeit Run the command \s{pudb SCRIPT.py}.
-\underline{TODO finalize invocation!}
+Start by opening a new terminal window. \typeit Run the following command in
+your terminal:
+
+\typeone{pudb control-flow.py}{Launch PuDB on our script.}
 
 PuDB uses a semi-graphical interface in your terminal. It's not intuitive to
 use, but we'll try to walk you through it carefully. Avoid hitting extraneous
@@ -648,7 +650,7 @@ read from the file:
   f.close()
 \end{lstlisting}
 
-Note that string data, like file objects, have methods attached --
+Note that string data, like file objects, have methods attached ---
 \s{rstrip()} in this case. This method returns a string that has had the
 newline code (\s{`\textbackslash n'} from before) removed, which is needed for
 this style of reading lines from a file.
@@ -660,9 +662,9 @@ important technique.
 
 You can do some surprisingly sophisticated computations in the streaming
 paradigm. As a relatively simple example, let's say that we want to compute
-the mean ($\langle M\rangle$) and variance ($\sigma^2_M$) of the
-``Mass'' column of the data table we read in, which is a catalog of stars.
-If there are $N$ masses labeled $M_i$, these are defined as:
+the mean $\langle M\rangle$ and variance $\sigma^2_M$ of the ``Mass'' column
+of the data table we read in, which is a catalog of stars. If there are $N$
+masses labeled $M_i$, these are defined as:
 \[
 \langle M\rangle = \frac{1}{N} \sum_{i = 1}^N M_i
 \]
@@ -724,6 +726,148 @@ tell you \i{much} more about this in the next session. However, while Numpy
 gives much better tools for calculating the mean and variance of a vector of
 data, it doesn't change the fundamental character of the approach, namely that
 it requires the full vector to be stored in memory.
+
+
+\newpage
+\section{Modules and Functions}
+
+In this hands-on activity we'll install and use a new Python package and
+create your own modules and functions.
+
+\subsection*{Installing a ``progress bar'' package}
+
+Our goal is to create a module that provides a function that prints out a
+``progress bar,'' showing how far some time-consuming task has progressed ---
+say, a download of a large file.
+
+Someone has surely already published a package that prints out a progress bar.
+So, our first task is to survey the options. In a new web browser window,
+navigate to the website \url{https://pypi.org/}. The ``PyPI'' is a centralized
+database of a huge number of public Python packages. Run a search for
+``progress bar'' to see what's available.
+
+Yikes! There are literally \i{dozens} of options. This reflects a general
+truth of software libraries: the easier it is to implement something, the more
+different libraries there are to do it. Progress bars are very easy to
+implement.
+
+Our decision-making is made easier because we prefer to use the \s{conda}
+package manager, which offers a much narrower selection of packages. Run the
+following command in your terminal to survey \s{conda}'s offerings:
+
+\typeone{conda search progress}{Search for Conda packages relating to ``progress''.}
+
+It's not important to understand the output of this program in detail. One
+thing that it is telling us, though, is that there is a package available
+named \s{progressbar2}. That sounds promising.
+
+Return to your web browser opened to \url{https://pypi.org/} and search
+specifically for \s{progressbar2}. Click on the result for it --- being
+careful because the search feature is a bit rough, and it doesn't put that one
+package front-and-center.
+
+There's a lot of information here. Scroll down to the ``Links'' section of the
+page, which is about halfway down. Read over the list of links, noting that
+one of them is to ``Documentation.'' Good: we don't want to waste our time
+with software that doesn't come with a manual. But, to save time, we won't
+look at the documentation right now.
+
+Since this package meets our (very minimal) standards, let's go ahead and
+install it. Go back to your terminal and run this command, hitting \s{Enter}
+at the prompt to confirm the action:
+
+\typeone{conda install progressbar2}{Install the ``progressbar2'' package.}
+
+Now, return to your Jupyter notebook. We can load up the module right away.
+Annoyingly, however, we must be careful because while the name of the
+\i{package} we just installed is \s{progressbar2}, the name of the \i{Python
+  module} provided by that package is just \s{progressbar}. This sort of thing
+crops up often.
+
+\begin{lstlisting}
+  import progressbar
+\end{lstlisting}
+
+If no error message occurred, the import succeeded.
+
+\subsection*{Writing your own module}
+
+We'll now create our own module that will demonstrate the features of
+\s{progressbar2}. Because we don't have time to develop a large piece of code,
+our module will necessarily be small and silly, but it's good to practice the
+process.
+
+You can't use Jupyter to create modules, so we'll need to go back to the
+terminal and \s{nano}. First, use \s{cd} to navigate to the directory where
+your Jupyter notebook is being stored. Use \s{ls} to confirm that you're in
+the right directory. It is \i{essential} for this exercise that you create the
+module file in the same directory as your notebook.
+
+Once you're sure that you're in the right directory, edit a new file:
+
+\typeone{nano myfirstmodule.py}{Edit a new file.}
+
+Fill in the following code --- again, this is to be typed \s{in nano} rather
+than in your Jupyter notebook:
+
+\begin{lstlisting}
+  from __future__ import division # we don't have time to explain this
+  from progressbar import ProgressBar
+  import time
+
+  string_variable = 'Hello from my module!'
+
+  def demo_progressbar(n_steps, total_time_seconds):
+      time_per_step = total_time_seconds / n_steps
+      pb = ProgressBar(maxval=n_steps).start() # "keyword" function argument
+
+      for i in range(n_steps):
+          time.sleep(time_per_step)
+          pb.update(i + 1)
+
+      pb.finish()
+\end{lstlisting}
+
+Save your file to disk.
+
+Back in your Jupyter notebook, you should be able to import your new module.
+Again, we're switching back from \s{nano} to Jupyter.
+
+\begin{lstlisting}
+  import myfirstmodule
+\end{lstlisting}
+
+If there's no error message, everything worked. If there is an error, ask a
+helper for assistance if you're at all unsure how to fix the problem.
+
+The \s{dir()} function will return a list of the variables defined in your
+module.
+
+\begin{lstlisting}
+  dir(myfirstmodule)
+\end{lstlisting}
+
+Note that this list includes not just your string variable, but also your
+function, the other modules that your module imported, \i{and} some special
+variables with names like \s{\_\_builtins\_\_} --- these are automatically
+created by Python within every module.
+
+Finally, let's use the code and data provided by our module!
+
+\begin{lstlisting}
+  print myfirstmodule.string_variable
+  myfirstmodule.demo_progressbar(10, 5)
+\end{lstlisting}
+
+You should see a progress bar get filled up over the course of five seconds.
+
+When doing real work, if you're making a module you probably want to reuse it
+in multiple projects. The approach that we just demonstrated is \i{not}
+desirable in those situations. Instead, you would create a \s{git} repository
+to track your module's development and write a special ``\s{setup.py}'' script
+allowing you to install it into your Python system's list of libraries. We
+don't have time to explain that whole process here, but there are many
+tutorials available online.
 
 
 \newpage
