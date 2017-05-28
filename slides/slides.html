@@ -449,7 +449,106 @@ also_sys = sys
 
 
         <section>
-          <h1 class="titlecard">6. Managing Complexity: Objects</h1>
+          <h1 class="titlecard">6. Managing Complexity: Classes</h1>
+        </section>
+
+        <section>
+          <h2>You can create your own data types.</h2>
+
+          <p>You can define a new <i>class</i> that combines data and
+            methods.</p>
+
+          <p>You can then create one or more <i>instances</i> of that
+            class.</p>
+
+          <p>Anything that can be assigned to a variable in Python is an
+            instance of some class.</p>
+        </section>
+
+        <section>
+          <h2>Here’s a typical class definition.</h2>
+
+          <pre><b>class</b> Counter(object):
+    value = 0
+
+    <b>def</b> increment(self):
+        self.value += 1
+
+    <b>def</b> get(self):
+        return self.value
+
+my_counter = Counter()
+my_counter.increment()
+<b>print</b> my_counter.get()</pre>
+        </section>
+
+        <section>
+          <h2>Custom types are a complexity tool.</h2>
+
+          <p>Classes are like “mini modules”: a tool for encapsulating related
+            code and data.</p>
+
+          <p>Also like a module: all of the code inside the <b>class</b> block
+            is run, and then the resulting assignments are bundled up and made
+            available.</p>
+
+          <p>Key difference: you can have multiple instances of a class.</p>
+        </section>
+
+        <section>
+          <h2>Classes often have <i>constructors</i>.</h2>
+
+          <p>This is usually problematic:</p>
+
+          <pre><b>class</b> Counters(object):
+    values = [0, 0, 0]
+    ...</pre>
+
+          <p>Instead:</p>
+
+          <pre><b>class</b> Counters(object):
+    <b>def</b> __init__(self, n_items):
+        self.values = [0] * n_items
+
+    ...</pre>
+        </section>
+
+        <section>
+          <h2>Python’s class system is elaborate.</h2>
+
+          <p>For instance, it has <i>inheritance</i>, where one class derives
+            from another:</p>
+
+          <pre><b>class</b> MyDictionary(dict):
+    ...</pre>
+
+          <p>You will not often need to use inheritance.</p>
+
+          <p>There are many magic
+            functions: <tt>__eq__</tt>, <tt>__getattr__</tt>, …</p>
+
+          <p>As ever: at some point you should read the detailed rules.</p>
+        </section>
+
+        <section>
+          <h2>Manage <i>statefulness</i> in your classes.</h2>
+
+          <p>Classes make it easy to introduce <i>hidden state</i>.</p>
+
+          <pre><b>class</b> MyClass(object):
+    mood = 'nice'
+    <b>def</b> turn_mean(self):
+        self.mood = 'mean'
+    <b>def</b> do_something(self):
+        <b>if</b> self.mood == 'nice':
+            <b>print</b> 'Hello!'
+        <b>else</b>:
+            sys.delete_all_files()
+...
+my_instance.do_something() # ????</pre>
+        </section>
+
+
         </section>
 
 
