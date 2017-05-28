@@ -1049,6 +1049,146 @@ variables are never modified once they're set. Once again, avoiding
 
 
 \newpage
+\section{Error Handling}
+
+In this last activity, we'll explore Python exceptions and error handling.
+
+\subsection*{Tracebacks}
+
+To \i{raise} your own exception in Python, you use the \s{raise} keyword with
+an instance of the \s{Exception} class or one of its subclasses.
+
+\begin{lstlisting}
+  raise Exception('demonstration error') # !!! raises Exception
+\end{lstlisting}
+
+The string argument to the \s{Exception} constructor is a message that will be
+printed if the exception is not handled.
+
+You will see that if one of your cells raises an unhandled exception, Jupyter
+prints out a lot more information than just the message. In particular, there
+is a diagnostic pointing out which line in your cell caused the problem. In
+this particular case that was no big mystery, but in the real world it often
+is.
+
+The unhandled-exception diagnostics include a key piece of information known
+as the \i{traceback}. The traceback shows not just the line of code where the
+exception occurred, but also the set of function calls that brought the
+program to that spot. An example might be helpful:
+
+\begin{lstlisting}
+  def inner():
+      print 'Inner before'
+      raise Exception('inner error')
+      print 'Inner after'
+
+  def outer():
+      print 'Outer before'
+      inner()
+      print 'Outer after'
+
+  outer() # !!! raises Exception
+\end{lstlisting}
+
+You should see that the traceback is now longer, showing the ``stack'' of
+function calls that led to the \s{raise} line. This contextual information can
+be very helpful.
+
+It can be tempting to write code that ``handles'' exceptions by turning them
+into new exceptions. Such code might look like this:
+
+\begin{lstlisting}
+  try:
+      outer() # !!! raises Exception
+  except Exception as e:
+      print 'Got an error:', e
+      raise Exception('error when calling outer()') # this is bad form
+\end{lstlisting}
+
+But this is not a good habit to get into. Note that our new exception loses
+the traceback information that told us exactly where the error occurred.
+That's bad.
+
+At the same time, code analogous to the above can be very useful for providing
+context. A traceback might show you that there was an error opening a file,
+but it might not tell you \i{which} file caused the error. A better pattern in
+these situations is:
+
+\begin{lstlisting}
+  try:
+      outer() # !!! raise exception
+  except Exception as e:
+      print 'error when calling outer()'
+      raise # this is better form
+\end{lstlisting}
+
+This provides the context but preserves the full traceback. This approach is
+not ideal since the extra context does not get stored with the \s{Exception}
+instance, though. Python~3 provides much better tools for this kind of context
+tracking.
+
+\subsection*{Exceptions are OK}
+
+It is also tempting to write code that avoids \i{causing} environmental
+errors. This is often actually a bad idea!
+
+For instance, say that you are writing a program that reads a file, and the
+user gives you the file's name. They might type the name wrong, giving you the
+name of a nonexistent file. This will lead to an \s{IOError}:
+
+\begin{lstlisting}
+  import os.path
+
+  file_name = '/not/a/file.txt'
+
+  open(file_name) # !!! raises IOError
+\end{lstlisting}
+
+To avoid this, you might want to use the \s{os.path.exists()} function to
+validate that the file exists before trying to open it:
+
+\begin{lstlisting}
+  if os.path.exists(file_name):
+      f = open(file_name)
+  else:
+      print 'error: file', file_name, 'does not exist'
+\end{lstlisting}
+
+This actually \i{gains you nothing}. Why? Because a tiny slice of time passes
+between when you check that the file exists, and when you try to open it.
+During that time, another program could delete the file, and then your
+\s{open()} would fail in the very way you were hoping not to have to deal
+with! That's a very improbable turn of events, of course, but it is not
+impossible.
+
+This problem is a classic example of a sort of bug called a \i{race
+  condition}. It is yet another example of mutability causing problems. Your
+computer's filesystem is basically a mutable, globally shared data structure,
+and this race condition arises because \i{other programs} can mutate it behind
+our backs at any time.
+
+In these cases the \i{only} truly robust approach is to just go ahead and open
+the file. Unfortunately, to be truly careful we have to add one more wrinkle:
+an \s{IOError} from \s{open()} could signify a variety of problems, so we have
+to check that its error code truly means ``file not found.'' Checking this
+takes some gymnastics in Python~2.
+
+\begin{lstlisting}
+  try:
+      f = open(file_name)
+  except IOError as e:
+      import errno
+      if e.errno != errno.ENOENT: # is e *not* a file-not-found error?
+          raise # e is some other error that we can't handle, so: reraise
+      print 'error: file', file_name, 'does not exist'
+\end{lstlisting}
+
+In yet another improvement, Python~3 adds a special \s{FileNotFoundError} type
+that makes this particular logic much easier to implement.
+
+
+
+\newpage
 \section*{Other Resources}
 
 Many, many people have written many, many books aimed at beginning
