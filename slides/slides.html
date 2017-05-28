@@ -549,11 +549,120 @@ my_instance.do_something() # ????</pre>
         </section>
 
 
-        </section>
-
-
         <section>
           <h1 class="titlecard">7. Error Handling</h1>
+        </section>
+
+        <section>
+          <h2>There are four kinds of errors.</h2>
+
+          <ol>
+            <li>Syntax errors</li>
+            <li>Implementation errors</li>
+            <li>Design errors</li>
+            <li>Environmental errors</li>
+          </ol>
+
+          <p>A perfect coder could avoid the first three, but <i>all</i> real
+            programs are subject to environmental errors.</p>
+        </section>
+
+        <section>
+          <h2>Python uses an <i>exception</i> paradigm.</h2>
+
+          <p>Errors cause the control flow to jump to special <i>except
+              blocks</i> that you can provide.</p>
+
+          <p>If no appropriate except block is available, the program aborts.</p>
+
+          <p><i>This paradigm is weak</i> because it makes error handling very
+            implicit, but it has its virtues.</p>
+        </section>
+
+        <section>
+          <h2>Python exceptions are data too.</h2>
+
+          <p>They are instances of the <tt>Exception</tt> class, or one of its
+            inherited <i>sub-classes</i>.</p>
+
+          <pre><b>try:</b>
+    do_some_io(file_name)
+    do_more_io(file_name)
+<b>except</b> IOError <b>as</b> e:
+    <b>print</b> 'Uh-oh:', (e, file_name)
+    <b>raise</b>
+
+<b>print</b> 'We made it to here.'</pre>
+        </section>
+
+        <section>
+          <h2>Don’t “handle” an error by ignoring it.</h2>
+
+          <p>It is tempting to write:</p>
+
+          <pre><b>try:</b>
+    big_chunk_of_code()
+<b>except</b> Exception <b>as</b> e:
+    <b>print</b> 'Error:', e</pre>
+
+          <p class="tctr tbig" style="color: #F00"><i>DO NOT DO THIS!!!!</i></p>
+
+          <p>Exceptions signify <i>major failures</i>. Only ignore them
+            in <i>tightly-controlled conditions</i>.</p>
+
+          <p>Exceptions come with lots of meta-data. Printing them yourself
+            loses the information.</p>
+        </section>
+
+        <section>
+          <h2>Handle exceptions narrowly.</h2>
+
+          <p>Isolate the specific lines that might fail, and catch a specific
+            error type:</p>
+
+          <pre><b>try:</b>
+    <b>import</b> scipy
+    have_scipy = True
+<b>except</b> ImportError:
+    have_scipy = False</pre>
+        </section>
+
+        <section>
+          <h2>Fix your bugs.</h2>
+
+          <p>Try/except statements are for environmental errors: the ones you
+            can’t prevent.</p>
+
+          <p>Solve other kinds of errors by <i>fixing your code</i>! Or by
+            using more appropriate tools. Not:</p>
+
+          <pre><b>try:</b>
+    v = mydict[keyname]
+<b>except</b> KeyError:
+    v = 0</pre>
+
+          <p>Instead:</p>
+
+          <pre>v = mydict.get(keyname, 0)</pre>
+        </section>
+
+        <section>
+          <h2>Turn exceptions into error codes.</h2>
+
+          <p>Exception data do not “serialize” well.</p>
+
+          <p>When recording whether an operation was successful or not,
+            recall <i>Anna Karenina</i>:</p>
+
+          <p class="tital tctr">“Happy families are all alike; every unhappy
+            family is unhappy in its own way.”</p>
+
+          <p>A small taxonomy of errors is usually useful:</p>
+
+          <pre>SUCCESS = 0
+CONVERGENCE_ERROR = 1
+IO_ERROR = 2
+...</pre>
         </section>
 
       </div>
