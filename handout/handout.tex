@@ -1138,11 +1138,11 @@ validate that the file exists before trying to open it:
       print 'error: file', file_name, 'does not exist'
 \end{lstlisting}
 
-This actually \i{gains you nothing}. Why? Because a tiny slice of time passes
-between when you check that the file exists, and when you try to open it.
-During that time, another program could delete the file, and then your
-\s{open()} would fail in the very way you were hoping not to have to deal
-with! That's a very improbable turn of events, of course, but it is not
+This is actually \i{less correct} than the prior code. Why? Because a tiny
+slice of time passes between when you check that the file exists, and when you
+try to open it. During that time, another program could delete the file, and
+then your \s{open()} would fail in the very way you were hoping not to have to
+deal with! That's a very improbable turn of events, of course, but it is not
 impossible.
 
 This problem is a classic example of a sort of bug called a \i{race
