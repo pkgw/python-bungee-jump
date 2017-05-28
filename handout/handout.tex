@@ -828,7 +828,10 @@ than in your Jupyter notebook:
       pb.finish()
 \end{lstlisting}
 
-Save your file to disk.
+Save your file to disk. The way the \s{progressbar} module works, you create a
+special object that is told how many ``steps'' some task will take, and you
+call a method \s{update()} on it to report how many steps have been completed.
+As you do so, the object will print and update a textual progress report.
 
 Back in your Jupyter notebook, you should be able to import your new module.
 Again, we're switching back from \s{nano} to Jupyter.
@@ -868,6 +871,182 @@ to track your module's development and write a special ``\s{setup.py}'' script
 allowing you to install it into your Python system's list of libraries. We
 don't have time to explain that whole process here, but there are many
 tutorials available online.
+
+
+\newpage
+\section{Classes}
+
+In this activity we'll implement our own new class.
+
+\subsection*{``Stubbing out'' our own \s{ProgressBar}}
+
+In particular, we're going to implement our own progress bar like the one
+provided by the \s{progressbar2} package. If you review the code that we wrote
+for the last activity, you may guess that the \s{ProgressBar} name provided by
+the \s{progressbar} module is a class.
+
+Jupyter notebooks are a bit unwieldy for writing your own classes, but the
+Jupyter editor is enough better than \s{nano} that we'll stick with Jupyter.
+
+The \s{ProgressBar} class from \s{progressbar2} had a constructor that took a
+``keyword'' argument named \s{maxval}. We'll start by emulating that:
+
+\begin{lstlisting}
+  class ProgressBar(object):
+      _maxval = None
+
+      def __init__(self, maxval=None):
+          self._maxval = maxval
+\end{lstlisting}
+
+Here we store the \s{maxval} argument in an instance-specific \i{property}
+called \s{\_maxval}. The leading underscore (\s{\_}) is a common encapsulation
+convention: it signals that that particular property is internal to the class,
+and you shouldn't access it from outside the class. (That is, you should avoid
+writing code that involves constructions like
+\s{progress\_bar\_instance.\_maxval}.)
+
+But, for the sake of testing our work-in-progress, we're going to violate that
+convention! Let's see if things work so far.
+
+\begin{lstlisting}
+  pb = ProgressBar(maxval=10)
+  pb._maxval
+\end{lstlisting}
+
+This should run without errors and you should get back the number 10 that you
+specified as the \s{maxval} argument to the constructor.
+
+\subsection*{Implementing \s{start()}}
+
+The \s{ProgressBar} class from \s{progressbar2} also has a method called
+\s{start()}. Our start method will record the current time, for reasons that
+will become clear later.
+
+Here's where Jupyter gets awkward. \i{Go back to the cell where you defined
+  the \s{ProgressBar} class and edit it}, expanding the definition to look
+like the following. We have marked the new lines of code; don't bother to type
+in those comments.
+
+\begin{lstlisting}
+  import time # new
+
+  class ProgressBar(object):
+      _maxval = None
+      _start_time = None # new
+
+      def __init__(self, maxval=None):
+          self._maxval = maxval
+
+      def start(self): # new
+          self._start_time = time.time() # new
+          return self # new
+\end{lstlisting}
+
+After editing, \i{re-run the cell} with \s{Shift-Enter} to override your
+previous class definition.
+
+We now import the \s{time} module, which (among other things) provides a
+function named \s{time()} that returns the current time measured in seconds
+since January~1, 1970. This function is used in the \s{start()} method to
+record the time at which it is called. The \s{start()} method returns
+\s{self}, a convention that enables a convenient pattern called \i{method
+  chaining} --- Google it if you have time.
+
+To validate our work so far, we'll violate the encapsulation convention again.
+Return to our usual practice and type the following code in a \i{new} notebook
+cell:
+
+\begin{lstlisting}
+  pb = ProgressBar(maxval=10).start()
+  pb._start_time
+\end{lstlisting}
+
+Note that we could save a line of code because \s{start()} returned \s{self}.
+The value stored in \s{\_start\_time} should be quite large, since there have
+been a lot of seconds since January~1, 1970.
+
+\subsection*{Implementing \s{update()}}
+
+The next task is to implement the \s{update()} method, which takes as an
+argument the number of steps that have been completed. When this method is
+called on our simple progress bar, it will print out the progress toward the
+goal. Our progress bar will be simpler than the one provided by
+\s{progressbar2}.
+
+Once again, return to your class definition cell and \i{edit it to add the
+  following method definition inside the class block}, taking care to indent
+properly.
+
+\begin{lstlisting}
+      # this code must be added to the ProgressBar class definition!
+
+      def update(self, n_completed):
+          percentage = 100.0 * n_completed / self._maxval
+          print 'Task is', percentage, 'percent complete.'
+          return self
+\end{lstlisting}
+
+Once again, rerun the cell that defines the class, then return to a new cell
+and run a quick test. Fortunately, we now have enough features that we can
+stop violating the encapsulation convention.
+
+\begin{lstlisting}
+  pb = ProgressBar(maxval=10).start()
+  pb.update(1)
+\end{lstlisting}
+
+If all has gone well, you should see a message that our task is 10~percent
+complete.
+
+\subsection*{Implementing \s{finish()}}
+
+Finally, we'll implement a \s{finish()} method, since the \s{progressbar2}
+version of the class had one. We'll use this opportunity to print out how much
+time has elapsed since the call to \s{start()}.
+
+Once again, go back and edit the cell that defines the \s{ProgressBar} class,
+appending the following method definition:
+
+\begin{lstlisting}
+      # this code must be added to the ProgressBar class definition!
+
+      def finish(self):
+          elapsed = time.time() - self._start_time
+          print 'Task took', elapsed, 'seconds to complete.'
+          return self
+\end{lstlisting}
+
+Once again, rerun the cell defining the class.
+
+Let's tie it all together by running the same code that we used in our module
+in the previous activity:
+
+\begin{lstlisting}
+  n_steps = 10
+  total_time_seconds = 5.0
+  time_per_step = total_time_seconds / n_steps
+  pb = ProgressBar(maxval=n_steps).start()
+
+  for i in range(n_steps):
+      time.sleep(time_per_step)
+      pb.update(i + 1)
+
+  pb.finish()
+\end{lstlisting}
+
+Our progress bar doesn't have the fancy output of the one provided by the
+\s{progressbar2} class. But, if we wanted to, we could figure out how to make
+the fancy output and update the \s{update()} method to print out something
+more sophisticated. Because the \s{ProgressBar} class has a very simple
+\i{interface} to the rest of our code, it is easy to think about how to make
+such a change and to be confident that it won't break anything in a surprising
+way.
+
+In the mini-lecture, we mentioned the idea of \i{statefulness} in objects.
+Note that our \s{ProgressBar} is essentially stateless: its internal data
+variables are never modified once they're set. Once again, avoiding
+\i{mutability} leads to code that is easy to reason about.
 
 
 \newpage
