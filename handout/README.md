@@ -14,5 +14,5 @@ Required fonts are:
   ([main website](http://www.georgduffner.at/ebgaramond/)):
   `EBGaramond12-Regular.otf`, `EBGaramond12-Italic.otf`.
 - [Source Code Pro version 2.030-RO/1.050-IT](https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip)
-  ([main website]()): `SourceCodePro-Regular.otf`, `SourceCodePro-It.otf`,
+  ([main website](https://github.com/adobe-fonts/source-code-pro/)): `SourceCodePro-Regular.otf`, `SourceCodePro-It.otf`,
   `SourceCodePro-Bold.otf`, `SourceCodePro-BoldIt.otf`,
