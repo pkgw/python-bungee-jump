@@ -125,7 +125,17 @@
 \usepackage{amsmath}
 
 
-% Commands-to-type environment, taken from the Git Lib. Only used in a couple
+% Simple environment calling out something the student needs to do.
+
+\newenvironment{action}{%
+  \begin{itemize}
+  \item[\raisebox{2pt}{❧}]
+}{%
+  \end{itemize}
+}
+
+
+% Commands-to-type environment, taken from the Git Lab. Only used in a couple
 % of places here.
 
 \usepackage{tabularx} % for \prompt

@@ -11,41 +11,37 @@
 \section*{Introduction\markboth{Introduction}{}}
 
 This handout accompanies a 90-minute introduction into computer programming
-using the \href{https://www.python.org/}{Python} language. It is intended for
-students who have never programmed a computer using a formal language before,
-although we hope that some of the ideas we present will be interesting to more
-experienced students as well.
+using the \href{https://www.python.org/}{Python} language. It is aimed at
+beginners, but we try to offer some insights for folks who have done a little
+bit of coding before.
 
-It is \i{totally impossible} to teach anything but the most superficial
-elements of the Python language or the principles of computer science in
-90~minutes.
+Ninety minutes is only enough time to scratch the surface. We'll try to teach
+a few core ideas and set you up to take the next steps on your own.
 
-Given that reality, for this lesson we have chosen to just \i{visit} a few
-topics that are important to the craft of writing software and illustrate them
-with some \i{extremely limited} examples in Python. Our treatments of both the
-``big picture'' ideas \i{and} the basics of writing Python programs will be
-dissatisfying. We hope, however, that this lesson will plant seeds that will
-grow over time.
+\vfill
 
-Due to the context in which this lesson was written, it is aimed at
-\i{version~2} of Python, not version~3. Students are expected to have a laptop
-available that is running the interactive \href{https://jupyter.org/}{Jupyter}
-notebook. The lesson is divided into seven activities, each of which has a
-``mini-lecture'' component and a hands-on component. Each activity is intended
-to take about 15~minutes to complete.
+\i{Note for teachers:} This introduction is aimed at \i{version~2} of Python,
+not version~3. Students are expected to have a laptop available that is
+running the interactive \href{https://jupyter.org/}{Jupyter} notebook. The
+session is divided into seven topics, each of which has a ``mini-lecture''
+component and a hands-on component. Each activity is intended to take about
+15~minutes to complete.
 
 
 \newpage
 \section{Foundations}
 
-In this hands-on activity, we'll just make sure that you can get Jupyter
-running and show you some basics about how to run commands in a Jupyter
-notebook. Because we're just getting started, there's a lot more explanatory
-text than you'll find in the other activities.
+First things first. Here we'll make sure that you can get start Jupyter and
+run a few commands in a Jupyter notebook.
 
-If you haven't already, start Jupyter and create a new, empty notebook. We've
-written this lesson assuming that you've already seen how to do this --- ask
-for help from a neighbor or a helper if not, or if you run into any problems.
+\begin{action}
+  This symbol calls out something you need to do as part of the hands-on
+  activities.
+
+  Start Jupyter and create a new, empty notebook. You should've already seen
+  how to do this --- if not, or if something goes wrong, ask for help from a
+  neighbor or a helper.
+\end{action}
 
 In this handout, text styled the following way is code that you should type
 into your notebook.
@@ -55,18 +51,24 @@ into your notebook.
   x = 1
 \end{lstlisting}
 
-Type this code now, \i{exactly} as it is shown here --- be careful with
-punctuation and spaces. When using Jupyter, start new lines of code by just
-hitting the \s{Enter} key as usual.
+Whenever you type code, enter it \i{exactly} as shown --- including being
+careful with punctuation and spaces. In Jupyter, start new lines by hitting
+the \s{Enter} key as usual.
 
-(By the way, we are \i{very intentionally} forcing you to type this code
-yourself! You'll have to type a lot of code yourself eventually; might as well
-start now.)
+\begin{action}
+  Type the code above into your notebook.
+
+  From here on, if you see code shown as above, type it in.
+\end{action}
 
 To actually \i{run} the block of code that you have just typed, type
 \s{Shift-Enter} (that is, the \s{Enter} key with the \s{Shift} key also held
-down). You should see the message ``Hello, world!'' appear and a new block for
-code entry appear. Each of these blocks is a \i{cell} in your notebook.
+down). You should see the message ``Hello, world!'' appear and a new code
+“cell” appear.
+
+\begin{action}
+  Run your first code by hitting \s{Shift-Enter}.
+\end{action}
 
 The horizontal bars delimit pieces of code that you should type in separate
 cells, typing \s{Shift-Enter} at the end of each cell. For instance:
