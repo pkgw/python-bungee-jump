@@ -125,13 +125,23 @@
 \usepackage{amsmath}
 
 
-% Simple environment calling out something the student needs to do.
+% Simple environment calling out something the student needs to do. Styling is
+% intentionally similar to that produced by lstlistings to help convey that
+% any code that appears should be typed in.
+
+\usepackage{dashrule}
+\newlength{\actionparwidth}
 
 \newenvironment{action}{%
-  \begin{itemize}
-  \item[\raisebox{2pt}{❧}]
+ \leftskip=20pt%
+ \rightskip=20pt%
+ \setlength{\actionparwidth}{\linewidth}%
+ \addtolength{\actionparwidth}{-40pt}%
+ \hdashrule{\actionparwidth}{1pt}{2pt}%
 }{%
-  \end{itemize}
+ \par \nointerlineskip \noindent%
+ \hspace*{\leftskip}%
+ \hdashrule{\actionparwidth}{1pt}{2pt}%
 }
 
 
