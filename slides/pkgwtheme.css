@@ -46,8 +46,8 @@ body {
 
 .reveal {
   font-family: "Open Sans", sans-serif;
-  font-size: 40px;
-  font-weight: 400;
+  font-size: 30px;
+  font-weight: 200;
   color: #222;
 
 /* I like to use this font with tighter letter spacing, but Webkit and Mozilla
